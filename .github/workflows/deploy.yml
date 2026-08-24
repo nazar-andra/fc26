@@ -58,13 +58,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          envs: FC26_IMAGE,GHCR_USER,GHCR_TOKEN,ADMIN_USER,ADMIN_PASS
-          env: |
-            FC26_IMAGE=${{ env.IMAGE_NAME }}
-            GHCR_USER=${{ github.actor }}
-            GHCR_TOKEN=${{ secrets.GHCR_TOKEN }}
-            ADMIN_USER=${{ secrets.ADMIN_USER }}
-            ADMIN_PASS=${{ secrets.ADMIN_PASS }}
           script: |
             set -e
+            export FC26_IMAGE="${{ env.IMAGE_NAME }}"
+            export GHCR_USER="${{ github.actor }}"
+            export GHCR_TOKEN="${{ secrets.GHCR_TOKEN }}"
+            export ADMIN_USER="${{ secrets.ADMIN_USER }}"
+            export ADMIN_PASS="${{ secrets.ADMIN_PASS }}"
             bash /home/ubuntu/apps/fc26/deploy.sh
