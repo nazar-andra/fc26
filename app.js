@@ -58,6 +58,10 @@ const els = {
   mappingLock: document.getElementById("toggleMappingLock"),
   mappingMeta: document.getElementById("mappingMeta"),
   mappingContent: document.getElementById("mappingContent"),
+  teamMappingModal: document.getElementById("teamMappingModal"),
+  closeTeamMapping: document.getElementById("closeTeamMapping"),
+  teamMappingTitle: document.getElementById("teamMappingTitle"),
+  teamMappingContent: document.getElementById("teamMappingContent"),
 };
 
 let state = structuredClone(defaultState);
@@ -162,6 +166,16 @@ async function initialize() {
     }
     persist();
     renderMapping();
+  });
+
+  els.closeTeamMapping.addEventListener("click", () => {
+    els.teamMappingModal.close();
+  });
+
+  els.teamMappingModal.addEventListener("click", (event) => {
+    if (event.target === els.teamMappingModal) {
+      els.teamMappingModal.close();
+    }
   });
 
   document.querySelectorAll(".view-tab").forEach((tab) => {
@@ -277,7 +291,7 @@ function renderSchedule() {
       const row = document.createElement("tr");
       const participantLabel = liveMatch
         ? getLiveMatchLabel(liveMatch)
-        : match.match;
+        : formatScheduleMatchLabel(match.match);
       [match.id, match.time, participantLabel].forEach((value) => {
         const cell = document.createElement("td");
         cell.textContent = value;
@@ -388,9 +402,33 @@ function getLiveMatchLabel(match) {
     .map((participant) => {
       if (!participant || participant.isPending) return "Menunggu hasil";
       if (participant.isBye) return "BYE";
-      return participant.name || "Menunggu hasil";
+      return formatScheduleTeamLabel(participant.name) || "Menunggu hasil";
     })
     .join(" vs ");
+}
+
+function formatScheduleMatchLabel(label) {
+  if (typeof label !== "string") return label;
+
+  return label
+    .split(/\s+vs\s+/i)
+    .map((participant) => formatScheduleTeamLabel(participant) || participant)
+    .join(" vs ");
+}
+
+function formatScheduleTeamLabel(label) {
+  if (typeof label !== "string") return "";
+
+  const teamMatch = label.trim().match(/^Tim\s*0*(\d+)$/i);
+  if (!teamMatch) return label.trim();
+
+  const teamNumber = Number(teamMatch[1]);
+  const mappedTeam = state.mapping?.find(
+    (item) => item?.teamNumber === teamNumber && item.name?.trim(),
+  );
+  const teamLabel = `Tim ${teamNumber}`;
+
+  return mappedTeam ? `${teamLabel} (${mappedTeam.name.trim()})` : teamLabel;
 }
 
 function makeTeams(count) {
@@ -839,9 +877,20 @@ function renderSlot(match, slotIndex) {
   label.className = "slot-label";
   label.textContent = slotIndex === 0 ? "Home" : "Away";
 
-  const name = document.createElement("div");
+  const name = document.createElement(
+    participant?.name && !participant.isBye && !participant.isPending
+      ? "button"
+      : "div",
+  );
   name.className = "slot-name";
   name.textContent = formatBracketName(participant?.name, participant);
+
+  if (name instanceof HTMLButtonElement) {
+    name.type = "button";
+    name.classList.add("team-name-trigger");
+    name.title = "Lihat mapping tim";
+    name.addEventListener("click", () => openTeamMappingModal(participant));
+  }
 
   if (participant?.winner) {
     name.classList.add("winner");
@@ -882,6 +931,45 @@ function formatBracketName(name, participant) {
     return `#${name.replace(/\s+/g, "")}`;
   }
   return name;
+}
+
+function openTeamMappingModal(participant) {
+  if (!els.teamMappingModal || !els.teamMappingContent) return;
+
+  const teamNumber = getTeamNumber(participant?.name);
+  const teamLabel = teamNumber === null
+    ? (participant?.name || "Tim")
+    : `Tim ${teamNumber}`;
+  const mappedTeam = teamNumber === null
+    ? null
+    : state.mapping?.find(
+      (item) => item?.teamNumber === teamNumber && item.name?.trim(),
+    );
+
+  els.teamMappingTitle.textContent = teamLabel;
+  els.teamMappingContent.replaceChildren();
+
+  const label = document.createElement("span");
+  label.className = "team-mapping-label";
+  label.textContent = "Nama mapping";
+
+  const value = document.createElement("strong");
+  value.className = mappedTeam ? "team-mapping-value" : "team-mapping-value is-empty";
+  value.textContent = mappedTeam
+    ? mappedTeam.name.trim()
+    : "Belum ada mapping untuk tim ini";
+
+  els.teamMappingContent.append(label, value);
+  els.teamMappingModal.showModal();
+}
+
+function getTeamNumber(label) {
+  if (typeof label !== "string") return null;
+  const match = label.trim().match(/^Tim\s*0*(\d+)$/i);
+  if (!match) return null;
+
+  const number = Number(match[1]);
+  return Number.isInteger(number) ? number : null;
 }
 
 function setScore(matchId, slotIndex, value) {

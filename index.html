@@ -88,6 +88,7 @@
         </nav>
 
         <section id="bracketView" class="view-panel" aria-label="Bracket view">
+          <p class="bracket-hint">Klik nama tim untuk melihat detail mapping.</p>
           <div class="bracket-scroll">
             <section id="bracket" class="bracket" aria-label="Tournament bracket">
               <svg id="bracketLines" class="bracket-lines" aria-hidden="true"></svg>
@@ -129,6 +130,17 @@
         </section>
       </main>
     </div>
+
+    <dialog id="teamMappingModal" class="team-mapping-modal" aria-labelledby="teamMappingTitle">
+      <div class="team-mapping-modal-head">
+        <div>
+          <div class="eyebrow">Team mapping</div>
+          <h2 id="teamMappingTitle">Mapping tim</h2>
+        </div>
+        <button id="closeTeamMapping" class="modal-close" type="button" aria-label="Tutup detail mapping">&times;</button>
+      </div>
+      <div id="teamMappingContent" class="team-mapping-content"></div>
+    </dialog>
 
     <script src="./app.js"></script>
   </body>
