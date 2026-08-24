@@ -31,7 +31,7 @@ COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Run as non-root user for security
-RUN addgroup -S app && adduser -S app -G app \
+RUN groupadd -r app && useradd -r -g app -m -d /app app \
     && chown -R app:app /app
 USER app
 
