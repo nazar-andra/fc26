@@ -34,11 +34,22 @@ jobs:
         with:
           context: .
           push: true
+          platforms: linux/arm64
           tags: |
             ${{ env.IMAGE_NAME }}:latest
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Copy deployment files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "docker-compose.yml,deploy.sh"
+          target: "/home/ubuntu/apps/fc26"
 
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@v1.2.0
@@ -47,18 +58,13 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          envs: FC26_IMAGE,GHCR_USER,GHCR_TOKEN,ADMIN_USER,ADMIN_PASS
+          env:
+            FC26_IMAGE: ${{ env.IMAGE_NAME }}
+            GHCR_USER: ${{ github.actor }}
+            GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+            ADMIN_USER: ${{ secrets.ADMIN_USER }}
+            ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
           script: |
             set -e
-            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker pull ${{ env.IMAGE_NAME }}:latest
-            docker stop fc26 || true
-            docker rm fc26 || true
-            docker run -d \
-              --name fc26 \
-              --restart unless-stopped \
-              -p 3000:3000 \
-              -e ADMIN_USER="${{ secrets.ADMIN_USER }}" \
-              -e ADMIN_PASS="${{ secrets.ADMIN_PASS }}" \
-              -v fc26-data:/app/data \
-              ${{ env.IMAGE_NAME }}:latest
-            docker image prune -f
+            bash /home/ubuntu/apps/fc26/deploy.sh

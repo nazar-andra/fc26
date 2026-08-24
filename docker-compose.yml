@@ -1,6 +1,7 @@
 services:
   fc26:
-    build: .
+    image: ${FC26_IMAGE:-fc26}:latest
+    platform: linux/arm64
     container_name: fc26
     restart: unless-stopped
     ports:
@@ -9,7 +10,7 @@ services:
       PORT: "3004"
       HOST: "0.0.0.0"
       DATA_DIR: /app/data
-      ADMIN_USER: admin
-      ADMIN_PASS: "123"
+      ADMIN_USER: ${ADMIN_USER:-admin}
+      ADMIN_PASS: ${ADMIN_PASS:-123}
     volumes:
       - ./data:/app/data
