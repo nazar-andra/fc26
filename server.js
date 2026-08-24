@@ -185,4 +185,4 @@ const host = process.env.HOST || "0.0.0.0";
 server.listen(port, host, () => {
   console.log(`Bracket app running at http://${host}:${port}`);
   console.log(`Data directory: ${dataDir}`);
-});
+}); 
