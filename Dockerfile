@@ -33,7 +33,6 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 # Run as non-root user for security
 RUN groupadd -r app && useradd -r -g app -m -d /app app \
     && chown -R app:app /app
-USER app
 
 EXPOSE 3004
 
