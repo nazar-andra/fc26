@@ -1,0 +1,12 @@
+{
+  "name": "fc26",
+  "version": "1.0.0",
+  "description": "Editable tournament bracket app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

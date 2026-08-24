@@ -1,0 +1,18 @@
+services:
+  fc26:
+    build: .
+    container_name: fc26
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: "3000"
+      HOST: "0.0.0.0"
+      DATA_DIR: /app/data
+      ADMIN_USER: admin
+      ADMIN_PASS: "123"
+    volumes:
+      - fc26-data:/app/data
+
+volumes:
+  fc26-data:

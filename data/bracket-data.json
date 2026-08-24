@@ -1,0 +1,450 @@
+{
+  "title": "eSport FIFA 26 Turnamen HUT AirNav ke-14",
+  "teamCount": 49,
+  "teams": [
+    {
+      "id": "team-1",
+      "name": "Tim 17",
+      "isBye": false
+    },
+    {
+      "id": "team-2",
+      "name": "Tim 28",
+      "isBye": false
+    },
+    {
+      "id": "team-3",
+      "name": "Tim 10",
+      "isBye": false
+    },
+    {
+      "id": "team-4",
+      "name": "Tim 29",
+      "isBye": false
+    },
+    {
+      "id": "team-5",
+      "name": "Tim 24",
+      "isBye": false
+    },
+    {
+      "id": "team-6",
+      "name": "Tim 48",
+      "isBye": false
+    },
+    {
+      "id": "team-7",
+      "name": "Tim 35",
+      "isBye": false
+    },
+    {
+      "id": "team-8",
+      "name": "Tim 49",
+      "isBye": false
+    },
+    {
+      "id": "team-9",
+      "name": "Tim 25",
+      "isBye": false
+    },
+    {
+      "id": "team-10",
+      "name": "Tim 37",
+      "isBye": false
+    },
+    {
+      "id": "team-11",
+      "name": "Tim 34",
+      "isBye": false
+    },
+    {
+      "id": "team-12",
+      "name": "Tim 41",
+      "isBye": false
+    },
+    {
+      "id": "team-13",
+      "name": "Tim 21",
+      "isBye": false
+    },
+    {
+      "id": "team-14",
+      "name": "Tim 23",
+      "isBye": false
+    },
+    {
+      "id": "team-15",
+      "name": "Tim 45",
+      "isBye": false
+    },
+    {
+      "id": "team-16",
+      "name": "Tim 15",
+      "isBye": false
+    },
+    {
+      "id": "team-17",
+      "name": "Tim 03",
+      "isBye": false
+    },
+    {
+      "id": "team-18",
+      "name": "Tim 11",
+      "isBye": false
+    },
+    {
+      "id": "team-19",
+      "name": "Tim 30",
+      "isBye": false
+    },
+    {
+      "id": "team-20",
+      "name": "Tim 44",
+      "isBye": false
+    },
+    {
+      "id": "team-21",
+      "name": "Tim 09",
+      "isBye": false
+    },
+    {
+      "id": "team-22",
+      "name": "Tim 13",
+      "isBye": false
+    },
+    {
+      "id": "team-23",
+      "name": "Tim 19",
+      "isBye": false
+    },
+    {
+      "id": "team-24",
+      "name": "Tim 47",
+      "isBye": false
+    },
+    {
+      "id": "team-25",
+      "name": "Tim 32",
+      "isBye": false
+    },
+    {
+      "id": "team-26",
+      "name": "Tim 12",
+      "isBye": false
+    },
+    {
+      "id": "team-27",
+      "name": "Tim 05",
+      "isBye": false
+    },
+    {
+      "id": "team-28",
+      "name": "Tim 43",
+      "isBye": false
+    },
+    {
+      "id": "team-29",
+      "name": "Tim 33",
+      "isBye": false
+    },
+    {
+      "id": "team-30",
+      "name": "Tim 36",
+      "isBye": false
+    },
+    {
+      "id": "team-31",
+      "name": "Tim 40",
+      "isBye": false
+    },
+    {
+      "id": "team-32",
+      "name": "Tim 38",
+      "isBye": false
+    },
+    {
+      "id": "team-33",
+      "name": "Tim 39",
+      "isBye": false
+    },
+    {
+      "id": "team-34",
+      "name": "Tim 16",
+      "isBye": false
+    },
+    {
+      "id": "team-35",
+      "name": "Tim 07",
+      "isBye": false
+    },
+    {
+      "id": "team-36",
+      "name": "Tim 27",
+      "isBye": false
+    },
+    {
+      "id": "team-37",
+      "name": "Tim 31",
+      "isBye": false
+    },
+    {
+      "id": "team-38",
+      "name": "Tim 46",
+      "isBye": false
+    },
+    {
+      "id": "team-39",
+      "name": "Tim 22",
+      "isBye": false
+    },
+    {
+      "id": "team-40",
+      "name": "Tim 26",
+      "isBye": false
+    },
+    {
+      "id": "team-41",
+      "name": "Tim 08",
+      "isBye": false
+    },
+    {
+      "id": "team-42",
+      "name": "Tim 06",
+      "isBye": false
+    },
+    {
+      "id": "team-43",
+      "name": "Tim 02",
+      "isBye": false
+    },
+    {
+      "id": "team-44",
+      "name": "Tim 42",
+      "isBye": false
+    },
+    {
+      "id": "team-45",
+      "name": "Tim 20",
+      "isBye": false
+    },
+    {
+      "id": "team-46",
+      "name": "Tim 18",
+      "isBye": false
+    },
+    {
+      "id": "team-47",
+      "name": "Tim 04",
+      "isBye": false
+    },
+    {
+      "id": "team-48",
+      "name": "Tim 01",
+      "isBye": false
+    },
+    {
+      "id": "team-49",
+      "name": "Tim 14",
+      "isBye": false
+    }
+  ],
+  "scores": {},
+  "mapping": [
+    {
+      "name": "Prize dan tiyo",
+      "teamNumber": null
+    },
+    {
+      "name": "Wawid dan Indra Sudarsono",
+      "teamNumber": null
+    },
+    {
+      "name": "Arrinal dan Ulil",
+      "teamNumber": null
+    },
+    {
+      "name": "Ibnu & Rama",
+      "teamNumber": null
+    },
+    {
+      "name": "Zulfan & Indra Surya",
+      "teamNumber": null
+    },
+    {
+      "name": "Ibnu Rois & Adrian Gagah",
+      "teamNumber": null
+    },
+    {
+      "name": "Ricky & fai",
+      "teamNumber": null
+    },
+    {
+      "name": "Tomi & Azadin",
+      "teamNumber": null
+    },
+    {
+      "name": "Hendy eka Bram & Fx Yohannes",
+      "teamNumber": null
+    },
+    {
+      "name": "Aji & Redzky D.",
+      "teamNumber": null
+    },
+    {
+      "name": "Dedi & Heru Prayogo",
+      "teamNumber": null
+    },
+    {
+      "name": "Agi & Heri setiawan",
+      "teamNumber": null
+    },
+    {
+      "name": "Cesario & Akhsony",
+      "teamNumber": null
+    },
+    {
+      "name": "Annaba & Fahrudin",
+      "teamNumber": null
+    },
+    {
+      "name": "Purwa & Bintang",
+      "teamNumber": null
+    },
+    {
+      "name": "Hilmi & Syamsu Rijal",
+      "teamNumber": null
+    },
+    {
+      "name": "Manik & Imam",
+      "teamNumber": null
+    },
+    {
+      "name": "Andi & Windu",
+      "teamNumber": null
+    },
+    {
+      "name": "Pringgadi & Ilham",
+      "teamNumber": null
+    },
+    {
+      "name": "Swandaru & Fika",
+      "teamNumber": null
+    },
+    {
+      "name": "Indra R. & Rahmad",
+      "teamNumber": null
+    },
+    {
+      "name": "Bastian & Metiu",
+      "teamNumber": null
+    },
+    {
+      "name": "Arvy A. & Rian H.",
+      "teamNumber": null
+    },
+    {
+      "name": "Akmal G. & Irul",
+      "teamNumber": null
+    },
+    {
+      "name": "Oktista arif & wahyu cfpl",
+      "teamNumber": null
+    },
+    {
+      "name": "Ares & Wisnu",
+      "teamNumber": null
+    },
+    {
+      "name": "Andre & Nazar",
+      "teamNumber": null
+    },
+    {
+      "name": "Cahyo & Waladi",
+      "teamNumber": null
+    },
+    {
+      "name": "Afan & Dhega",
+      "teamNumber": null
+    },
+    {
+      "name": "Hidayat & Fakhri",
+      "teamNumber": null
+    },
+    {
+      "name": "Kamil & Fiqih",
+      "teamNumber": null
+    },
+    {
+      "name": "Adith & Raihan",
+      "teamNumber": null
+    },
+    {
+      "name": "Arief & Adi",
+      "teamNumber": null
+    },
+    {
+      "name": "Bagus & Naufal",
+      "teamNumber": null
+    },
+    {
+      "name": "Tb & Sumindak",
+      "teamNumber": null
+    },
+    {
+      "name": "Danang & Kamal",
+      "teamNumber": null
+    },
+    {
+      "name": "Reza & Ackbar",
+      "teamNumber": null
+    },
+    {
+      "name": "Ihsan & Sanny",
+      "teamNumber": null
+    },
+    {
+      "name": "ferry & yogi",
+      "teamNumber": null
+    },
+    {
+      "name": "Dega & Prasetyo",
+      "teamNumber": null
+    },
+    {
+      "name": "Arie & Bajuri",
+      "teamNumber": null
+    },
+    {
+      "name": "Ilham R & Ricki A",
+      "teamNumber": null
+    },
+    {
+      "name": "Hafizh & Agam",
+      "teamNumber": null
+    },
+    {
+      "name": "Satria & Chaerul Umam",
+      "teamNumber": null
+    },
+    {
+      "name": "Dewa Gede Edi P.W dan Reza W.P.",
+      "teamNumber": null
+    },
+    {
+      "name": "Ivan & Arief",
+      "teamNumber": null
+    },
+    {
+      "name": "Friega & Ghifary",
+      "teamNumber": null
+    },
+    {
+      "name": "Resei & adi",
+      "teamNumber": null
+    },
+    {
+      "name": "Syafiandry & Adi",
+      "teamNumber": null
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+# ---- Build stage ----
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package.json ./
+# No runtime dependencies; keep this stage minimal for future use.
+
+# ---- Runtime stage ----
+FROM node:20-alpine
+WORKDIR /app
+
+ENV NODE_ENV=production \
+    PORT=3000 \
+    HOST=0.0.0.0 \
+    DATA_DIR=/app/data
+
+# Copy application source
+COPY --from=build /app/package.json ./package.json
+COPY server.js ./
+COPY app.js ./
+COPY index.html ./
+COPY styles.css ./
+
+# Seed data (copied into the volume on first run by the entrypoint)
+COPY data/ /app/data-seed/
+
+# Data directory (mounted as a volume at runtime)
+RUN mkdir -p /app/data
+
+# Entrypoint
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Run as non-root user for security
+RUN addgroup -S app && adduser -S app -G app \
+    && chown -R app:app /app
+USER app
+
+EXPOSE 3000
+
+ENTRYPOINT ["docker-entrypoint.sh"]

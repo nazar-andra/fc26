@@ -1,0 +1,83 @@
+{
+  "subtitle": "JADWAL PERTANDINGAN TURNAMEN FIFA26 HUT AIRNAV KE-14",
+  "sections": [
+    {
+      "title": "1 September 2026 - Round of 64",
+      "note": "Pada hari pertama hanya tim yang tidak mendapat bye yang bermain. Ada 17 pertandingan.",
+      "matches": [
+        { "id": "M01", "time": "09:00-09:15", "match": "Tim15 vs Tim3" },
+        { "id": "M02", "time": "09:15-09:30", "match": "Tim11 vs Tim30" },
+        { "id": "M03", "time": "09:30-09:45", "match": "Tim44 vs Tim9" },
+        { "id": "M04", "time": "09:45-10:00", "match": "Tim13 vs Tim19" },
+        { "id": "M05", "time": "10:00-10:15", "match": "Tim47 vs Tim32" },
+        { "id": "M06", "time": "10:15-10:30", "match": "Tim12 vs Tim5" },
+        { "id": "M07", "time": "10:30-10:45", "match": "Tim43 vs Tim33" },
+        { "id": "M08", "time": "10:45-11:00", "match": "Tim36 vs Tim40" },
+        { "id": "M09", "time": "11:00-11:15", "match": "Tim38 vs Tim39" },
+        { "id": "M10", "time": "11:15-11:30", "match": "Tim16 vs Tim7" },
+        { "id": "M11", "time": "11:30-11:45", "match": "Tim27 vs Tim31" },
+        { "id": "M12", "time": "11:45-12:00", "match": "Tim46 vs Tim22" },
+        { "id": "M13", "time": "12:00-12:15", "match": "Tim26 vs Tim8" },
+        { "id": "M14", "time": "12:15-12:30", "match": "Tim6 vs Tim2" },
+        { "id": "M15", "time": "12:30-12:45", "match": "Tim42 vs Tim20" },
+        { "id": "M16", "time": "12:45-13:00", "match": "Tim18 vs Tim4" },
+        { "id": "M17", "time": "13:00-13:15", "match": "Tim1 vs Tim14" }
+      ]
+    },
+    {
+      "title": "2 September 2026 - Round of 32",
+      "note": "Ada 16 pertandingan.",
+      "matches": [
+        { "id": "M18", "time": "09:00-09:15", "match": "Tim17 vs Tim28" },
+        { "id": "M19", "time": "09:15-09:30", "match": "Tim10 vs Tim29" },
+        { "id": "M20", "time": "09:30-09:45", "match": "Tim24 vs Tim48" },
+        { "id": "M21", "time": "09:45-10:00", "match": "Tim35 vs Tim49" },
+        { "id": "M22", "time": "10:00-10:15", "match": "Tim25 vs Tim37" },
+        { "id": "M23", "time": "10:15-10:30", "match": "Tim34 vs Tim41" },
+        { "id": "M24", "time": "10:30-10:45", "match": "Tim21 vs Tim23" },
+        { "id": "M25", "time": "10:45-11:00", "match": "Tim45 vs Pemenang M01" },
+        { "id": "M26", "time": "11:00-11:15", "match": "Pemenang M02 vs Pemenang M03" },
+        { "id": "M27", "time": "11:15-11:30", "match": "Pemenang M04 vs Pemenang M05" },
+        { "id": "M28", "time": "11:30-11:45", "match": "Pemenang M06 vs Pemenang M07" },
+        { "id": "M29", "time": "11:45-12:00", "match": "Pemenang M08 vs Pemenang M09" },
+        { "id": "M30", "time": "12:00-12:15", "match": "Pemenang M10 vs Pemenang M11" },
+        { "id": "M31", "time": "12:15-12:30", "match": "Pemenang M12 vs Pemenang M13" },
+        { "id": "M32", "time": "12:30-12:45", "match": "Pemenang M14 vs Pemenang M15" },
+        { "id": "M33", "time": "12:45-13:00", "match": "Pemenang M16 vs Pemenang M17" }
+      ]
+    },
+    {
+      "title": "3 September 2026 - Round of 16",
+      "note": "Round of 16 terdiri dari 8 pertandingan.",
+      "matches": [
+        { "id": "M34", "time": "09:00-09:15", "match": "Pemenang M18 vs Pemenang M19" },
+        { "id": "M35", "time": "09:15-09:30", "match": "Pemenang M20 vs Pemenang M21" },
+        { "id": "M36", "time": "09:30-09:45", "match": "Pemenang M22 vs Pemenang M23" },
+        { "id": "M37", "time": "09:45-10:00", "match": "Pemenang M24 vs Pemenang M25" },
+        { "id": "M38", "time": "10:00-10:15", "match": "Pemenang M26 vs Pemenang M27" },
+        { "id": "M39", "time": "10:15-10:30", "match": "Pemenang M28 vs Pemenang M29" },
+        { "id": "M40", "time": "10:30-10:45", "match": "Pemenang M30 vs Pemenang M31" },
+        { "id": "M41", "time": "10:45-11:00", "match": "Pemenang M32 vs Pemenang M33" }
+      ]
+    },
+    {
+      "title": "Quarter Final",
+      "matches": [
+        { "id": "M42 - QF1", "time": "11:00-11:15", "match": "Pemenang M34 vs Pemenang M35" },
+        { "id": "M43 - QF2", "time": "11:15-11:30", "match": "Pemenang M36 vs Pemenang M37" },
+        { "id": "M44 - QF3", "time": "11:30-11:45", "match": "Pemenang M38 vs Pemenang M39" },
+        { "id": "M45 - QF4", "time": "11:45-12:00", "match": "Pemenang M40 vs Pemenang M41" }
+      ]
+    },
+    {
+      "title": "4 September 2026 - Semifinal & Final",
+      "subsections": ["Semifinal", "Perebutan Juara 3", "Grand Final"],
+      "matches": [
+        { "id": "M46 - SF1", "time": "09:00-09:15", "match": "Pemenang M42 vs Pemenang M43" },
+        { "id": "M47 - SF2", "time": "09:15-09:30", "match": "Pemenang M44 vs Pemenang M45" },
+        { "id": "M48", "time": "10:00-10:15", "match": "Kalah M46 vs Kalah M47" },
+        { "id": "M49 - FINAL", "time": "10:30-10:45", "match": "Pemenang M46 vs Pemenang M47" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bracket Editor</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <aside class="sidebar">
+        <div class="eyebrow">Tournament desk</div>
+        <h1>Bracket editor</h1>
+        <p class="lede">
+          Rename tim, isi skor, lalu winner akan naik otomatis ke ronde berikutnya.
+        </p>
+
+        <section class="panel">
+          <label class="field">
+            <span>Judul turnamen</span>
+            <input id="tournamentName" type="text" />
+          </label>
+
+          <label class="field">
+            <span>Jumlah tim</span>
+            <select id="teamCount">
+          <option value="49">49 tim</option>
+          <option value="64">64 tim</option>
+            </select>
+          </label>
+
+          <div class="actions">
+            <button id="resetRoster" type="button">Reset roster</button>
+            <button id="loadExample" type="button" style="display: none;" class="ghost">Load contoh</button>
+            <button id="clearScores" type="button" class="ghost">Clear skor</button>
+            <button id="viewOnly" type="button" class="ghost">View only</button>
+          </div>
+        </section>
+
+        <section class="panel roster-panel">
+          <div class="panel-head">
+            <h2>Nama tim</h2>
+            <span id="teamMeta" class="meta"></span>
+          </div>
+          <div id="teamList" class="team-list"></div>
+        </section>
+      </aside>
+
+      <main class="board">
+        <header id="boardHead" class="board-head">
+          <div>
+            <div class="eyebrow">Single elimination</div>
+            <h2 id="boardTitle">Bracket</h2>
+            <p id="boardSubtitle" class="board-subtitle">Editable tournament board</p>
+          </div>
+          <div class="stats">
+            <div class="stat">
+              <span>Completed</span>
+              <strong id="completedCount">0 / 0</strong>
+            </div>
+            <div class="stat">
+              <span>Progress</span>
+              <strong id="completionPct">0%</strong>
+            </div>
+          </div>
+        </header>
+
+        <div id="progressTrack" class="progress-track" aria-hidden="true">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <nav class="view-tabs" aria-label="Tampilan turnamen">
+          <button class="view-tab active" type="button" role="tab" aria-selected="true" data-view="bracket">
+            Bracket
+          </button>
+          <button class="view-tab" type="button" role="tab" aria-selected="false" data-view="schedule">
+            Jadwal
+          </button>
+          <button class="view-tab" type="button" role="tab" aria-selected="false" data-view="mapping">
+            Mapping tim
+          </button>
+        </nav>
+
+        <section id="bracketView" class="view-panel" aria-label="Bracket view">
+          <div class="bracket-scroll">
+            <section id="bracket" class="bracket" aria-label="Tournament bracket">
+              <svg id="bracketLines" class="bracket-lines" aria-hidden="true"></svg>
+              <div id="roundsGrid" class="rounds-grid"></div>
+              <section id="thirdPlaceHost" class="third-place-host" aria-label="Third place match"></section>
+            </section>
+          </div>
+        </section>
+
+        <section id="scheduleView" class="schedule-view" aria-label="Jadwal pertandingan" hidden>
+          <div class="schedule-head">
+            <div>
+              <div class="eyebrow">Match schedule</div>
+              <h3>Jadwal pertandingan</h3>
+              <p id="scheduleSubtitle">Jadwal turnamen dari file jadwal.xlsx</p>
+            </div>
+            <div class="schedule-meta" id="scheduleMeta"></div>
+          </div>
+          <div id="scheduleContent" class="schedule-content">
+            <div class="schedule-loading">Memuat jadwal...</div>
+          </div>
+        </section>
+
+        <section id="mappingView" class="mapping-view" aria-label="Mapping nama tim" hidden>
+          <div class="mapping-head">
+            <div>
+              <div class="eyebrow">Team mapping</div>
+              <h3>Mapping nama tim</h3>
+              <p>Setiap nama dipasangkan ke nomor tim bracket secara acak.</p>
+            </div>
+            <div class="mapping-actions">
+              <button id="randomizeMapping" class="mapping-randomize" type="button">Acak mapping</button>
+              <button id="resetMapping" class="mapping-reset" type="button">Reset mapping</button>
+            </div>
+          </div>
+          <div id="mappingMeta" class="mapping-meta"></div>
+          <div id="mappingContent" class="mapping-content"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
