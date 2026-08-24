@@ -9,7 +9,7 @@ FROM node:20-alpine
 WORKDIR /app
 
 ENV NODE_ENV=production \
-    PORT=3000 \
+    PORT=3004 \
     HOST=0.0.0.0 \
     DATA_DIR=/app/data
 
@@ -35,6 +35,6 @@ RUN addgroup -S app && adduser -S app -G app \
     && chown -R app:app /app
 USER app
 
-EXPOSE 3000
+EXPOSE 3004
 
 ENTRYPOINT ["docker-entrypoint.sh"]

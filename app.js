@@ -2,6 +2,8 @@ const legacyStorageKey = "fc26-bracket-state-v3";
 const viewOnly =
   new URLSearchParams(window.location.search).get("view") === "1";
 const stateApiUrl = viewOnly ? "/api/state?view=1" : "/api/state";
+const scheduleApiUrl = viewOnly ? "/api/schedule?view=1" : "/api/schedule";
+const teamNamesApiUrl = viewOnly ? "/api/team-names?view=1" : "/api/team-names";
 
 if (viewOnly) {
   document.body.classList.add("view-only");
@@ -153,7 +155,7 @@ async function initialize() {
 
 async function loadSchedule() {
   try {
-    const response = await fetch("/api/schedule", { cache: "no-store" });
+    const response = await fetch(scheduleApiUrl, { cache: "no-store" });
     if (!response.ok) throw new Error("Could not load schedule data");
     return await response.json();
   } catch (error) {
@@ -163,7 +165,7 @@ async function loadSchedule() {
 
 async function loadTeamNames() {
   try {
-    const response = await fetch("/api/team-names", { cache: "no-store" });
+    const response = await fetch(teamNamesApiUrl, { cache: "no-store" });
     if (!response.ok) throw new Error("Could not load team names");
     return await response.json();
   } catch {
