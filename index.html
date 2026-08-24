@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="page-shell">
-      <aside class="sidebar">
+      <aside id="sidebar" class="sidebar">
         <div class="eyebrow">Tournament desk</div>
         <h1>Bracket editor</h1>
         <p class="lede">
@@ -46,7 +46,13 @@
         </section>
       </aside>
 
+      <div id="mobileMenuOverlay" class="mobile-menu-overlay" hidden></div>
+
       <main class="board">
+        <button id="mobileMenuToggle" class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="sidebar">
+          <span class="hamburger-icon" aria-hidden="true">&#9776;</span>
+          Menu
+        </button>
         <header id="boardHead" class="board-head">
           <div>
             <div class="eyebrow">Single elimination</div>
@@ -115,6 +121,7 @@
             <div class="mapping-actions">
               <button id="randomizeMapping" class="mapping-randomize" type="button">Acak mapping</button>
               <button id="resetMapping" class="mapping-reset" type="button">Reset mapping</button>
+              <button id="toggleMappingLock" class="mapping-lock" type="button" aria-pressed="false">Lock mapping</button>
             </div>
           </div>
           <div id="mappingMeta" class="mapping-meta"></div>

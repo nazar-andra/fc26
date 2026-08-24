@@ -31,6 +31,9 @@ const els = {
   loadExample: document.getElementById("loadExample"),
   clearScores: document.getElementById("clearScores"),
   viewOnly: document.getElementById("viewOnly"),
+  sidebar: document.getElementById("sidebar"),
+  mobileMenuToggle: document.getElementById("mobileMenuToggle"),
+  mobileMenuOverlay: document.getElementById("mobileMenuOverlay"),
   boardHead: document.getElementById("boardHead"),
   teamList: document.getElementById("teamList"),
   teamMeta: document.getElementById("teamMeta"),
@@ -52,6 +55,7 @@ const els = {
   mappingView: document.getElementById("mappingView"),
   mappingRandomize: document.getElementById("randomizeMapping"),
   mappingReset: document.getElementById("resetMapping"),
+  mappingLock: document.getElementById("toggleMappingLock"),
   mappingMeta: document.getElementById("mappingMeta"),
   mappingContent: document.getElementById("mappingContent"),
 };
@@ -90,6 +94,8 @@ async function initialize() {
       teamCount: nextCount,
       teams: makeTeams(nextCount),
       scores: {},
+      mapping: createEmptyMapping(),
+      mappingLocked: false,
     };
     els.teamCount.value = String(nextCount);
     persist();
@@ -124,6 +130,12 @@ async function initialize() {
     );
   });
 
+  els.mobileMenuToggle.addEventListener("click", () => toggleMobileMenu());
+  els.mobileMenuOverlay.addEventListener("click", () => toggleMobileMenu(false));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") toggleMobileMenu(false);
+  });
+
   els.mappingRandomize.addEventListener("click", () => {
     state.mapping = createRandomMapping();
     persist();
@@ -135,6 +147,19 @@ async function initialize() {
     if (!confirmed) return;
 
     state.mapping = createEmptyMapping();
+    persist();
+    renderMapping();
+  });
+
+  els.mappingLock.addEventListener("click", () => {
+    if (state.mappingLocked) {
+      state.mappingLocked = false;
+    } else {
+      const hasAssignedMapping = Array.isArray(state.mapping) &&
+        state.mapping.some((item) => Number.isInteger(item?.teamNumber));
+      if (!hasAssignedMapping) state.mapping = createRandomMapping();
+      state.mappingLocked = true;
+    }
     persist();
     renderMapping();
   });
@@ -174,6 +199,7 @@ async function loadTeamNames() {
 }
 
 function setActiveView(view) {
+  toggleMobileMenu(false);
   const isSchedule = view === "schedule";
   const isMapping = view === "mapping";
   els.bracketView.hidden = isSchedule || isMapping;
@@ -187,6 +213,16 @@ function setActiveView(view) {
     tab.classList.toggle("active", active);
     tab.setAttribute("aria-selected", String(active));
   });
+}
+
+function toggleMobileMenu(force) {
+  const shouldOpen = typeof force === "boolean"
+    ? force
+    : !els.sidebar.classList.contains("is-open");
+  els.sidebar.classList.toggle("is-open", shouldOpen);
+  els.mobileMenuOverlay.hidden = !shouldOpen;
+  els.mobileMenuToggle.setAttribute("aria-expanded", String(shouldOpen));
+  document.body.classList.toggle("menu-open", shouldOpen);
 }
 
 function renderSchedule() {
@@ -262,6 +298,12 @@ function renderMapping() {
 
   els.mappingContent.replaceChildren();
   const mapping = Array.isArray(state.mapping) ? state.mapping : [];
+  const isLocked = Boolean(state.mappingLocked);
+  els.mappingRandomize.hidden = isLocked;
+  els.mappingReset.hidden = isLocked;
+  els.mappingLock.textContent = isLocked ? "Unlock mapping" : "Lock mapping";
+  els.mappingLock.classList.toggle("is-locked", isLocked);
+  els.mappingLock.setAttribute("aria-pressed", String(isLocked));
   els.mappingMeta.textContent = `${mapping.length} nama terpasang`;
 
   if (!mapping.length) {
@@ -417,6 +459,7 @@ function normalizeState(input) {
     scores:
       typeof input.scores === "object" && input.scores ? input.scores : {},
     mapping: normalizeMapping(input.mapping),
+    mappingLocked: Boolean(input.mappingLocked),
   };
 }
 
@@ -560,6 +603,8 @@ function loadExampleRoster() {
     teamCount: 49,
     teams: makeTeams(49),
     scores: {},
+    mapping: createEmptyMapping(),
+    mappingLocked: false,
   };
 
   els.teamCount.value = "49";
