@@ -252,200 +252,200 @@
   "mapping": [
     {
       "name": "Prize dan tiyo",
-      "teamNumber": null
+      "teamNumber": 3
     },
     {
       "name": "Wawid dan Indra Sudarsono",
-      "teamNumber": null
+      "teamNumber": 40
     },
     {
       "name": "Arrinal dan Ulil",
-      "teamNumber": null
+      "teamNumber": 12
     },
     {
       "name": "Ibnu & Rama",
-      "teamNumber": null
+      "teamNumber": 32
     },
     {
       "name": "Zulfan & Indra Surya",
-      "teamNumber": null
+      "teamNumber": 46
     },
     {
       "name": "Ibnu Rois & Adrian Gagah",
-      "teamNumber": null
+      "teamNumber": 5
     },
     {
       "name": "Ricky & fai",
-      "teamNumber": null
+      "teamNumber": 15
     },
     {
       "name": "Tomi & Azadin",
-      "teamNumber": null
+      "teamNumber": 35
     },
     {
       "name": "Hendy eka Bram & Fx Yohannes",
-      "teamNumber": null
+      "teamNumber": 26
     },
     {
       "name": "Aji & Redzky D.",
-      "teamNumber": null
+      "teamNumber": 36
     },
     {
       "name": "Dedi & Heru Prayogo",
-      "teamNumber": null
+      "teamNumber": 24
     },
     {
       "name": "Agi & Heri setiawan",
-      "teamNumber": null
+      "teamNumber": 7
     },
     {
       "name": "Cesario & Akhsony",
-      "teamNumber": null
+      "teamNumber": 8
     },
     {
       "name": "Annaba & Fahrudin",
-      "teamNumber": null
+      "teamNumber": 44
     },
     {
       "name": "Purwa & Bintang",
-      "teamNumber": null
+      "teamNumber": 1
     },
     {
       "name": "Hilmi & Syamsu Rijal",
-      "teamNumber": null
+      "teamNumber": 25
     },
     {
       "name": "Manik & Imam",
-      "teamNumber": null
+      "teamNumber": 43
     },
     {
       "name": "Andi & Windu",
-      "teamNumber": null
+      "teamNumber": 6
     },
     {
       "name": "Pringgadi & Ilham",
-      "teamNumber": null
+      "teamNumber": 17
     },
     {
       "name": "Swandaru & Fika",
-      "teamNumber": null
+      "teamNumber": 14
     },
     {
       "name": "Indra R. & Rahmad",
-      "teamNumber": null
+      "teamNumber": 31
     },
     {
       "name": "Bastian & Metiu",
-      "teamNumber": null
+      "teamNumber": 10
     },
     {
       "name": "Arvy A. & Rian H.",
-      "teamNumber": null
+      "teamNumber": 11
     },
     {
       "name": "Akmal G. & Irul",
-      "teamNumber": null
+      "teamNumber": 30
     },
     {
       "name": "Oktista arif & wahyu cfpl",
-      "teamNumber": null
+      "teamNumber": 49
     },
     {
       "name": "Ares & Wisnu",
-      "teamNumber": null
+      "teamNumber": 45
     },
     {
       "name": "Andre & Nazar",
-      "teamNumber": null
+      "teamNumber": 47
     },
     {
       "name": "Cahyo & Waladi",
-      "teamNumber": null
+      "teamNumber": 34
     },
     {
       "name": "Afan & Dhega",
-      "teamNumber": null
+      "teamNumber": 4
     },
     {
       "name": "Hidayat & Fakhri",
-      "teamNumber": null
+      "teamNumber": 20
     },
     {
       "name": "Kamil & Fiqih",
-      "teamNumber": null
+      "teamNumber": 39
     },
     {
       "name": "Adith & Raihan",
-      "teamNumber": null
+      "teamNumber": 38
     },
     {
       "name": "Arief & Adi",
-      "teamNumber": null
+      "teamNumber": 41
     },
     {
       "name": "Bagus & Naufal",
-      "teamNumber": null
+      "teamNumber": 2
     },
     {
       "name": "Tb & Sumindak",
-      "teamNumber": null
+      "teamNumber": 22
     },
     {
       "name": "Danang & Kamal",
-      "teamNumber": null
+      "teamNumber": 33
     },
     {
       "name": "Reza & Ackbar",
-      "teamNumber": null
+      "teamNumber": 28
     },
     {
       "name": "Ihsan & Sanny",
-      "teamNumber": null
+      "teamNumber": 16
     },
     {
       "name": "ferry & yogi",
-      "teamNumber": null
+      "teamNumber": 18
     },
     {
       "name": "Dega & Prasetyo",
-      "teamNumber": null
+      "teamNumber": 37
     },
     {
       "name": "Arie & Bajuri",
-      "teamNumber": null
+      "teamNumber": 27
     },
     {
       "name": "Ilham R & Ricki A",
-      "teamNumber": null
+      "teamNumber": 21
     },
     {
       "name": "Hafizh & Agam",
-      "teamNumber": null
+      "teamNumber": 42
     },
     {
       "name": "Satria & Chaerul Umam",
-      "teamNumber": null
+      "teamNumber": 23
     },
     {
       "name": "Dewa Gede Edi P.W dan Reza W.P.",
-      "teamNumber": null
+      "teamNumber": 9
     },
     {
       "name": "Ivan & Arief",
-      "teamNumber": null
+      "teamNumber": 29
     },
     {
       "name": "Friega & Ghifary",
-      "teamNumber": null
+      "teamNumber": 13
     },
     {
       "name": "Resei & adi",
-      "teamNumber": null
+      "teamNumber": 48
     },
     {
-      "name": "Syafiandry & Adi",
-      "teamNumber": null
+      "name": "Syafiandry & Bastian N",
+      "teamNumber": 19
     }
   ],
-  "mappingLocked": false
+  "mappingLocked": true
 }
