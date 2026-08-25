@@ -53,6 +53,7 @@ const els = {
   scheduleMeta: document.getElementById("scheduleMeta"),
   scheduleSubtitle: document.getElementById("scheduleSubtitle"),
   mappingView: document.getElementById("mappingView"),
+  rulesView: document.getElementById("rulesView"),
   mappingRandomize: document.getElementById("randomizeMapping"),
   mappingReset: document.getElementById("resetMapping"),
   mappingLock: document.getElementById("toggleMappingLock"),
@@ -216,11 +217,13 @@ function setActiveView(view) {
   toggleMobileMenu(false);
   const isSchedule = view === "schedule";
   const isMapping = view === "mapping";
-  els.bracketView.hidden = isSchedule || isMapping;
+  const isRules = view === "rules";
+  els.bracketView.hidden = isSchedule || isMapping || isRules;
   els.scheduleView.hidden = !isSchedule;
   els.mappingView.hidden = !isMapping;
-  els.boardHead.hidden = isMapping;
-  els.progressTrack.hidden = isSchedule || isMapping;
+  els.rulesView.hidden = !isRules;
+  els.boardHead.hidden = isMapping || isRules;
+  els.progressTrack.hidden = isSchedule || isMapping || isRules;
 
   document.querySelectorAll(".view-tab").forEach((tab) => {
     const active = tab.dataset.view === view;

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bracket Editor</title>
+    <title>FC26 Turnamen - AirNav HUT-14</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -83,7 +83,10 @@
             Jadwal
           </button>
           <button class="view-tab" type="button" role="tab" aria-selected="false" data-view="mapping">
-            Mapping tim
+            Tim
+          </button>
+          <button class="view-tab" type="button" role="tab" aria-selected="false" data-view="rules">
+            Rules
           </button>
         </nav>
 
@@ -127,6 +130,46 @@
           </div>
           <div id="mappingMeta" class="mapping-meta"></div>
           <div id="mappingContent" class="mapping-content"></div>
+        </section>
+
+        <section id="rulesView" class="rules-view" aria-label="Rules of the game" hidden>
+          <div class="rules-head">
+            <div class="eyebrow">Tournament regulations</div>
+            <h3>RULES OF THE GAME FIFA26</h3>
+            <p>Peraturan lomba dan peraturan bertanding yang berlaku selama turnamen.</p>
+          </div>
+
+          <div class="rules-content">
+            <div class="rules-group">
+              <div class="rules-group-label">01 / Kehadiran &amp; sportivitas</div>
+              <ol>
+                <li>Pertandingan dilaksanakan mulai tanggal 1-4 September 2026 mulai pukul 09.00 WIB.</li>
+                <li>Setiap peserta wajib datang tepat waktu minimal 20 menit sebelum lomba dimulai.</li>
+                <li>Peserta yang sudah mendaftar namun tidak berada di lokasi pada saat lomba dimulai maka akan dieliminasi.</li>
+                <li>Setiap peserta wajib menjaga nilai sportivitas sebelum, saat, dan sesudah pertandingan baik menang maupun kalah.</li>
+              </ol>
+            </div>
+
+            <div class="rules-group">
+              <div class="rules-group-label">02 / Peraturan bertanding</div>
+              <ol start="5">
+                <li>Game setting default tidak dapat diubah.</li>
+                <li>Tim yang dipertandingkan adalah klub.</li>
+                <li>Sistem pertandingan adalah sistem gugur.</li>
+                <li>Waktu pertandingan yang digunakan adalah 10 menit, ditambah dengan perpanjangan waktu sampai penalti.</li>
+                <li>Kondisi players yang digunakan adalah normal. Tidak diperbolehkan menggunakan kondisi merah apalagi putih.</li>
+                <li>Peserta hanya diberi waktu 3 menit untuk melakukan setting formasi sebelum pertandingan dimulai. Setelah waktu habis peserta wajib melakukan start match.</li>
+                <li>Dalam pertandingan peserta dilarang menekan tombol start dengan alasan apapun. Jika melanggar maka akan diberi peringatan pertama. Jika melanggar lagi maka didiskualifikasi.</li>
+                <li>Jika terjadi kesalahan teknis seperti tombol tidak berfungsi secara normal maka pertandingan akan di-restart sesuai dengan kondisi atau skor terakhir.</li>
+                <li>Pertandingan akan diulang apabila di lokasi terjadi listrik mati.</li>
+                <li>Dalam pertandingan, kamera yang dipakai adalah wide dan dilarang menggunakan radar.</li>
+                <li>Pergantian pemain boleh dilakukan apabila pada saat half-time, pemain cedera, dan saat bola keluar lapangan.</li>
+                <li>Jika terjadi kartu merah, maka peserta berhak melakukan pengaturan formasi/formation settings dan pergantian pemain selama maksimal 1 menit.</li>
+                <li>Peserta dilarang menggunakan cheat atau trik curang apapun yang merugikan pihak lawan.</li>
+                <li>Keputusan panitia tidak dapat diganggu gugat.</li>
+              </ol>
+            </div>
+          </div>
         </section>
       </main>
     </div>
