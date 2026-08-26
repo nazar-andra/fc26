@@ -642,6 +642,34 @@ h2 {
   font-size: 0.84rem;
 }
 
+.mapping-name-input {
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  padding: 7px 9px;
+  font: inherit;
+  outline: none;
+  transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.mapping-name-input:hover {
+  border-color: rgba(96, 110, 132, 0.2);
+  background: #f8fbff;
+}
+
+.mapping-name-input:focus {
+  border-color: rgba(47, 79, 214, 0.82);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(47, 79, 214, 0.12);
+}
+
+.mapping-name-input:disabled {
+  color: inherit;
+  opacity: 1;
+}
+
 .mapping-table th:first-child,
 .mapping-table td:first-child {
   width: 12%;

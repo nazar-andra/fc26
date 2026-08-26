@@ -70,6 +70,7 @@ let bracketDrawFrame = 0;
 let currentBracketData = { rounds: [], thirdPlace: null };
 let bracketResizeObserver = null;
 let saveQueue = Promise.resolve();
+let teamNamesSaveQueue = Promise.resolve();
 let scheduleData = null;
 let mappingNames = [];
 
@@ -343,11 +344,29 @@ function renderMapping() {
     const assignedTeam = item.teamNumber
       ? `Tim ${String(item.teamNumber).padStart(2, "0")}`
       : "Belum ditetapkan";
-    [String(index + 1), item.name, assignedTeam].forEach((value) => {
-      const cell = document.createElement("td");
-      cell.textContent = value;
-      row.append(cell);
+
+    const numberCell = document.createElement("td");
+    numberCell.textContent = String(index + 1);
+
+    const nameCell = document.createElement("td");
+    const input = document.createElement("input");
+    input.className = "mapping-name-input";
+    input.type = "text";
+    input.value = item.name || "";
+    input.placeholder = `Nama tim ${index + 1}`;
+    input.disabled = viewOnly;
+    input.addEventListener("input", (event) => {
+      const nextName = event.target.value;
+      mappingNames[index] = nextName;
+      if (state.mapping[index]) state.mapping[index].name = nextName;
+      persistTeamNames();
+      persist();
     });
+    nameCell.append(input);
+
+    const assignedCell = document.createElement("td");
+    assignedCell.textContent = assignedTeam;
+    row.append(numberCell, nameCell, assignedCell);
     body.append(row);
   });
 
@@ -578,6 +597,27 @@ function persist() {
     });
 
   return saveQueue;
+}
+
+function persistTeamNames() {
+  const snapshot = [...mappingNames];
+  teamNamesSaveQueue = teamNamesSaveQueue
+    .catch(() => {})
+    .then(() =>
+      fetch(teamNamesApiUrl, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(snapshot),
+      }),
+    )
+    .then((response) => {
+      if (!response.ok) throw new Error("Could not save team names");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  return teamNamesSaveQueue;
 }
 
 function render() {
