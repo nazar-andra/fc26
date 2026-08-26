@@ -45,6 +45,7 @@ const els = {
   bracketLines: document.getElementById("bracketLines"),
   roundsGrid: document.getElementById("roundsGrid"),
   thirdPlaceHost: document.getElementById("thirdPlaceHost"),
+  podium: document.getElementById("podium"),
   boardSubtitle: document.getElementById("boardSubtitle"),
   progressTrack: document.getElementById("progressTrack"),
   bracketView: document.getElementById("bracketView"),
@@ -749,7 +750,95 @@ function renderBracket() {
     els.thirdPlaceHost.append(renderThirdPlaceMatch(bracketData.thirdPlace));
   }
 
+  renderPodium(bracketData);
+
   scheduleBracketLines();
+}
+
+function renderPodium(bracketData) {
+  if (!els.podium) return;
+
+  els.podium.replaceChildren();
+
+  const finalRound = bracketData.rounds.at(-1);
+  const finalMatch = finalRound?.matches.at(-1) || null;
+  const finalWinner = finalMatch?.winner || null;
+  const finalLoser = finalWinner && finalMatch?.participants
+    ? finalMatch.participants.find((participant) => participant.id !== finalWinner.id)
+    : null;
+  const thirdWinner = bracketData.thirdPlace?.winner || null;
+
+  const heading = document.createElement("div");
+  heading.className = "podium-head";
+
+  const eyebrow = document.createElement("div");
+  eyebrow.className = "eyebrow";
+  eyebrow.textContent = "Final standings";
+
+  const title = document.createElement("h3");
+  title.textContent = "Hasil akhir turnamen";
+  heading.append(eyebrow, title);
+
+  const grid = document.createElement("div");
+  grid.className = "podium-grid";
+  grid.append(
+    renderPodiumCard("1", "Juara 1", finalWinner, "Pemenang final", "gold"),
+    renderPodiumCard("2", "Juara 2", finalLoser, "Kalah di final", "silver"),
+    renderPodiumCard("3", "Juara 3", thirdWinner, "Pemenang perebutan juara 3", "bronze"),
+  );
+
+  els.podium.append(heading, grid);
+}
+
+function renderPodiumCard(rank, label, participant, source, tone) {
+  const card = document.createElement("article");
+  card.className = `podium-card podium-${tone}`;
+
+  const rankEl = document.createElement("div");
+  rankEl.className = "podium-rank";
+  rankEl.textContent = rank;
+
+  const copy = document.createElement("div");
+  copy.className = "podium-copy";
+
+  const labelEl = document.createElement("div");
+  labelEl.className = "podium-label";
+  labelEl.textContent = label;
+
+  const name = document.createElement("strong");
+  name.className = participant ? "podium-name" : "podium-name is-pending";
+  name.textContent = participant ? getPodiumDisplayName(participant) : "Menunggu hasil";
+
+  const teamId = document.createElement("span");
+  teamId.className = "podium-team-id";
+  teamId.textContent = participant ? getPodiumTeamLabel(participant) : "";
+
+  const sourceEl = document.createElement("span");
+  sourceEl.className = "podium-source";
+  sourceEl.textContent = participant ? source : "Pertandingan belum selesai";
+
+  copy.append(labelEl, name, teamId, sourceEl);
+  card.append(rankEl, copy);
+  return card;
+}
+
+function getPodiumDisplayName(participant) {
+  if (!participant?.name) return "Menunggu hasil";
+
+  const teamNumber = getTeamNumber(participant.name);
+  const mappedTeam = teamNumber === null
+    ? null
+    : state.mapping?.find(
+      (item) => item?.teamNumber === teamNumber && item.name?.trim(),
+    );
+
+  return mappedTeam?.name?.trim() || participant.name;
+}
+
+function getPodiumTeamLabel(participant) {
+  const teamNumber = getTeamNumber(participant?.name);
+  if (teamNumber === null) return "";
+  return `Tim ${String(teamNumber).padStart(2, "0")}`;
 }
 
 function renderMatch(match, roundIndex, matchIndex) {

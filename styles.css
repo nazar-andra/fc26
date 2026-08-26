@@ -1029,6 +1029,125 @@ h2 {
   width: 172px;
 }
 
+.podium {
+  margin: 22px 0 0;
+  padding: 22px;
+  border: 1px solid rgba(96, 110, 132, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 12px 30px rgba(20, 30, 48, 0.06);
+}
+
+.podium-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.podium-head h3 {
+  margin: 6px 0 0;
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+}
+
+.podium-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 12px;
+}
+
+.podium-card {
+  display: flex;
+  align-items: center;
+  height: 104px;
+  gap: 13px;
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid rgba(96, 110, 132, 0.16);
+  border-radius: 14px;
+  background: #fbfcff;
+}
+
+.podium-rank {
+  display: grid;
+  flex: 0 0 38px;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.podium-gold .podium-rank { background: #c58b1c; }
+.podium-silver .podium-rank { background: #7f8da5; }
+.podium-bronze .podium-rank { background: #a96845; }
+
+.podium-copy {
+  display: grid;
+  align-content: center;
+  min-width: 0;
+  min-height: 62px;
+  gap: 3px;
+}
+
+.podium-label,
+.podium-source,
+.podium-team-id {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.podium-label {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.podium-name {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.podium-name.is-pending {
+  color: var(--subtle);
+  font-weight: 600;
+}
+
+.podium-team-id {
+  color: var(--subtle);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+  .podium {
+    margin-inline: 0;
+    padding: 16px;
+  }
+
+  .podium-head {
+    display: block;
+  }
+
+  .podium-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .podium-card {
+    height: 104px;
+  }
+}
+
 .team-mapping-modal {
   width: min(420px, calc(100% - 32px));
   border: 1px solid rgba(96, 110, 132, 0.2);
