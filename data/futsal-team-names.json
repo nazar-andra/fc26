@@ -1,0 +1,82 @@
+[
+  {
+    "id": "cabang-01",
+    "name": "Palembang",
+    "category": "Cabang"
+  },
+  {
+    "id": "cabang-02",
+    "name": "Balikpapan",
+    "category": "Cabang"
+  },
+  {
+    "id": "cabang-03",
+    "name": "JATSC 1",
+    "category": "Cabang"
+  },
+  {
+    "id": "cabang-04",
+    "name": "Denpasar",
+    "category": "Cabang"
+  },
+  {
+    "id": "cabang-05",
+    "name": "Yogyakarta",
+    "category": "Cabang"
+  },
+  {
+    "id": "cabang-06",
+    "name": "JATSC 2",
+    "category": "Cabang"
+  },
+  {
+    "id": "cabang-07",
+    "name": "Banjarmasin",
+    "category": "Cabang"
+  },
+  {
+    "id": "cabang-08",
+    "name": "MATSC",
+    "category": "Cabang"
+  },
+  {
+    "id": "outsourcing-01",
+    "name": "UGM 1",
+    "category": "Outsourcing"
+  },
+  {
+    "id": "outsourcing-02",
+    "name": "UGM 2",
+    "category": "Outsourcing"
+  },
+  {
+    "id": "outsourcing-03",
+    "name": "AVSEC JATSC",
+    "category": "Outsourcing"
+  },
+  {
+    "id": "kantor-pusat-01",
+    "name": "Direktorat Operasi",
+    "category": "Kantor Pusat"
+  },
+  {
+    "id": "kantor-pusat-02",
+    "name": "Direktorat Teknik",
+    "category": "Kantor Pusat"
+  },
+  {
+    "id": "kantor-pusat-03",
+    "name": "Direktorat SDM",
+    "category": "Kantor Pusat"
+  },
+  {
+    "id": "kantor-pusat-04",
+    "name": "Direktorat Keuangan",
+    "category": "Kantor Pusat"
+  },
+  {
+    "id": "kantor-pusat-05",
+    "name": "DKKS",
+    "category": "Kantor Pusat"
+  }
+]

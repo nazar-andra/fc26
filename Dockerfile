@@ -19,6 +19,9 @@ COPY server.js ./
 COPY app.js ./
 COPY index.html ./
 COPY styles.css ./
+COPY futsal.js ./
+COPY futsal.html ./
+COPY futsal.css ./
 
 # Seed data (copied into the volume on first run by the entrypoint)
 COPY data/ /app/data-seed/

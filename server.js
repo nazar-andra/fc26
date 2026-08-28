@@ -14,6 +14,8 @@ const dataFiles = {
   "/api/state": "bracket-data.json",
   "/api/schedule": "schedule-data.json",
   "/api/team-names": "team-names.json",
+  "/api/futsal-state": "futsal-data.json",
+  "/api/futsal-team-names": "futsal-team-names.json",
 };
 
 const mimeTypes = {
@@ -130,6 +132,8 @@ const server = http.createServer((req, res) => {
   const protectedRoute =
     urlPath === "/" ||
     urlPath === "/index.html" ||
+    urlPath === "/futsal" ||
+    urlPath === "/futsal.html" ||
     Object.prototype.hasOwnProperty.call(dataFiles, urlPath);
 
   if (protectedRoute && !isViewOnly && !isAuthorized(req)) {

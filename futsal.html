@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b3974" />
+    <title>Futsal HUT AirNav ke-14</title>
+    <link rel="stylesheet" href="./futsal.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/futsal" aria-label="Beranda turnamen futsal">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span><strong>AIRNAV</strong><small>FUTSAL 2026</small></span>
+        </a>
+        <div class="topbar-actions">
+          <span class="save-state" id="saveState" aria-live="polite">Data tersimpan</span>
+          <!-- <a class="switch-page" href="/">FC26</a> -->
+          <button class="view-link" id="openViewOnly" type="button">View only</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="kicker">HUT ke-14 Perum LPPNPI · 07—11 September 2026</p>
+            <label class="title-editor">
+              <span class="sr-only">Judul turnamen</span>
+              <input id="tournamentTitle" value="Turnamen Futsal AirNav 2026" />
+            </label>
+            <p class="hero-note">Satu lapangan. Empat grup. Dua tim terbaik melaju mengejar gelar.</p>
+          </div>
+          <div class="phase-ribbon" aria-label="Tahapan turnamen">
+            <div class="phase active"><span>01</span><strong>Fase grup</strong><small>25 laga</small></div>
+            <div class="phase"><span>02</span><strong>8 besar</strong><small>4 laga</small></div>
+            <div class="phase"><span>03</span><strong>Semifinal</strong><small>2 laga</small></div>
+            <div class="phase"><span>04</span><strong>Final</strong><small>2 laga</small></div>
+          </div>
+          <div class="hero-stats">
+            <div><strong id="completedStat">0/33</strong><span>Laga selesai</span></div>
+            <div><strong>16</strong><span>Tim peserta</span></div>
+            <div><strong>1</strong><span>Lapangan</span></div>
+            <div><strong>30'</strong><span>Slot per laga</span></div>
+          </div>
+        </section>
+
+        <nav class="tabs" aria-label="Navigasi turnamen">
+          <button class="tab active" data-view="groups" type="button">Pertandingan grup</button>
+          <button class="tab" data-view="standings" type="button">Klasemen</button>
+          <button class="tab" data-view="knockout" type="button">Fase gugur</button>
+          <button class="tab" data-view="schedule" type="button">Jadwal</button>
+          <button class="tab" data-view="recap" type="button">Rekap tim</button>
+          <button class="tab" data-view="mapping" type="button">Mapping tim</button>
+          <button class="tab" data-view="rules" type="button">Ketentuan</button>
+        </nav>
+
+        <section class="view-panel" id="groupsView" data-panel="groups">
+          <div class="section-head">
+            <div><p class="section-code">GROUP DESK</p><h2>Hasil pertandingan grup</h2></div>
+            <p>Masukkan skor dan kartu setelah laga selesai. Klasemen dihitung otomatis.</p>
+          </div>
+          <div id="groupMatches" class="group-match-grid"></div>
+        </section>
+
+        <section class="view-panel" id="standingsView" data-panel="standings" hidden>
+          <div class="section-head">
+            <div><p class="section-code">LIVE TABLE</p><h2>Klasemen fase grup</h2></div>
+            <p>Dua tim teratas setiap grup otomatis masuk ke babak 8 besar.</p>
+          </div>
+          <div id="standingsGrid" class="standings-grid"></div>
+        </section>
+
+        <section class="view-panel" id="knockoutView" data-panel="knockout" hidden>
+          <div class="section-head">
+            <div><p class="section-code">THE RUN-IN</p><h2>Fase gugur</h2></div>
+            <p>Jika skor imbang, isi skor penalti untuk menentukan tim yang melaju.</p>
+          </div>
+          <div id="knockoutBracket" class="knockout-bracket"></div>
+          <div id="podium" class="podium"></div>
+        </section>
+
+        <section class="view-panel" id="scheduleView" data-panel="schedule" hidden>
+          <div class="section-head">
+            <div><p class="section-code">ONE COURT / 30 MIN</p><h2>Jadwal pertandingan</h2></div>
+            <p>Disusun untuk satu lapangan dengan jeda antarlaga setiap tim.</p>
+          </div>
+          <div id="scheduleDays" class="schedule-days"></div>
+        </section>
+
+        <section class="view-panel" id="recapView" data-panel="recap" hidden>
+          <div class="section-head">
+            <div><p class="section-code">TEAM LOGBOOK</p><h2>Rekap catatan tim</h2></div>
+            <p>Pilih tim untuk melihat catatan pencetak gol dan penerima kartu dari seluruh pertandingannya.</p>
+          </div>
+          <div class="recap-layout">
+            <aside id="recapTeamList" class="recap-team-list" aria-label="Daftar tim"></aside>
+            <div id="recapContent" class="recap-content"></div>
+          </div>
+        </section>
+
+        <section class="view-panel" id="mappingView" data-panel="mapping" hidden>
+          <div class="section-head">
+            <div><p class="section-code">CATEGORY DRAW</p><h2>Mapping nama tim</h2></div>
+            <p>Nama diacak hanya ke slot yang sesuai kategorinya. Struktur grup tetap 4—4—3—5.</p>
+          </div>
+          <div class="mapping-toolbar">
+            <span id="mappingMeta" class="mapping-meta">0 dari 16 tim terpasang</span>
+            <div class="mapping-actions">
+              <button id="randomizeMapping" class="primary-button" type="button">Acak mapping</button>
+              <button id="resetMapping" class="danger-button" type="button">Reset mapping</button>
+              <button id="toggleMappingLock" class="lock-button" type="button" aria-pressed="false">Lock mapping</button>
+            </div>
+          </div>
+          <div id="mappingGrid" class="mapping-grid"></div>
+        </section>
+
+        <section class="view-panel" id="rulesView" data-panel="rules" hidden>
+          <div class="section-head">
+            <div><p class="section-code">COMPETITION LOGIC</p><h2>Ketentuan turnamen</h2></div>
+            <p>Aturan yang digunakan aplikasi untuk menghitung klasemen dan kelolosan.</p>
+          </div>
+          <div class="rules-layout">
+            <ol class="rules-list">
+              <li><strong>Poin pertandingan</strong><span>Menang 3 poin, seri 1 poin, kalah 0 poin.</span></li>
+              <li><strong>Urutan klasemen</strong><span>Poin, selisih gol, jumlah gol, head-to-head, lalu fair play.</span></li>
+              <li><strong>Head-to-head</strong><span>Jika lebih dari dua tim sama, digunakan klasemen mini antar tim terkait.</span></li>
+              <li><strong>Kelolosan</strong><span>Dua tim teratas setiap grup masuk ke babak 8 besar.</span></li>
+              <li><strong>Skor imbang fase gugur</strong><span>Pemenang ditentukan melalui input hasil adu penalti.</span></li>
+              <li><strong>Hasil tetap identik</strong><span>Panitia menetapkan urutan atau pemenang secara manual.</span></li>
+            </ol>
+            <div class="fair-play-card">
+              <p>FAIR PLAY</p>
+              <div><span>Kartu kuning</span><strong>−1</strong></div>
+              <div><span>Merah dari dua kuning</span><strong>−3</strong></div>
+              <div><span>Kartu merah langsung</span><strong>−4</strong></div>
+              <small>Nilai tertinggi (pengurangan paling kecil) berada di atas.</small>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="matchDialog" class="match-dialog" aria-labelledby="dialogTitle">
+      <form method="dialog" class="dialog-card">
+        <div class="dialog-head">
+          <div><p id="dialogMeta"></p><h2 id="dialogTitle">Catatan pertandingan</h2></div>
+          <button value="cancel" aria-label="Tutup">×</button>
+        </div>
+        <div id="dialogBody"></div>
+        <p class="dialog-help">Catatan bersifat free text dan tidak dijumlahkan otomatis oleh sistem.</p>
+        <div class="dialog-actions">
+          <button id="clearMatch" class="danger-button" type="button">Hapus hasil &amp; catatan</button>
+          <button value="cancel" class="primary-button">Selesai</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./futsal.js"></script>
+  </body>
+</html>
