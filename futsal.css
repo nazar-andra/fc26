@@ -311,6 +311,7 @@ main { width: min(1520px, 100%); margin: 0 auto; }
 .fair-score { color: var(--muted); }
 
 .knockout-bracket {
+  position: relative;
   display: grid;
   grid-template-columns: 1.2fr 1fr .9fr;
   align-items: start;
@@ -320,12 +321,14 @@ main { width: min(1520px, 100%); margin: 0 auto; }
   background: var(--navy);
   border-bottom: 5px solid var(--lime);
 }
-.knockout-round { min-width: 280px; }
+.knockout-round { position: relative; z-index: 1; min-width: 280px; }
+.bracket-connectors { position: absolute; inset: 0; z-index: 0; overflow: visible; pointer-events: none; }
+.bracket-connector { fill: none; stroke: var(--lime); stroke-width: 2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .round-label { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; color: var(--white); font: 800 18px var(--display); text-transform: uppercase; }
 .round-label span { color: var(--lime); font: 10px var(--mono); }
 .knockout-matches { display: grid; gap: 16px; }
 .knockout-round.semifinal .knockout-matches { padding-top: 50px; gap: 116px; }
-.knockout-round.finals .knockout-matches { padding-top: 133px; gap: 22px; }
+.knockout-round.finals .knockout-matches { padding-top: 133px; }
 .ko-match { overflow: hidden; background: var(--white); border: 1px solid rgba(255,255,255,.25); border-radius: 4px; }
 .ko-match-head { display: flex; justify-content: space-between; padding: 7px 10px; color: #6c7889; background: var(--soft); font: 9px var(--mono); text-transform: uppercase; }
 .ko-head-actions { display: flex; align-items: center; gap: 8px; }
@@ -339,6 +342,8 @@ main { width: min(1520px, 100%); margin: 0 auto; }
 .penalty-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 7px 10px; color: var(--muted); background: #fbf7eb; border-top: 1px solid #eadfbf; font-size: 10px; }
 .penalty-inputs { display: flex; align-items: center; gap: 5px; }
 .penalty-inputs input { width: 34px; height: 28px; padding: 0; border: 1px solid #d5c8a7; background: var(--white); text-align: center; }
+.third-place-bracket { width: min(430px, 100%); margin-top: 18px; padding: 18px; background: var(--navy); border-bottom: 4px solid #ad704e; }
+.third-place-bracket .ko-match { width: 100%; }
 
 .podium { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 22px; background: var(--line); border: 1px solid var(--line); }
 .podium-card { min-height: 125px; padding: 20px; background: var(--white); }

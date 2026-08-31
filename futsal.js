@@ -3,9 +3,14 @@ const stateApiUrl = viewOnly ? "/api/futsal-state?view=1" : "/api/futsal-state";
 const teamNamesApiUrl = viewOnly ? "/api/futsal-team-names?view=1" : "/api/futsal-team-names";
 
 const CATEGORY_CONFIG = [
-  { name: "Cabang", groups: "Grup A & B", color: "#0c4f9e", slotGroups: ["A", "B"] },
-  { name: "Outsourcing", groups: "Grup C", color: "#7b55a3", slotGroups: ["C"] },
-  { name: "Kantor Pusat", groups: "Grup D", color: "#bd6736", slotGroups: ["D"] },
+  { name: "Cabang", groups: "Diacak ke Grup A, B & C", color: "#0c4f9e" },
+  { name: "Outsourcing", groups: "Diacak ke Grup A, B & C", color: "#7b55a3" },
+  { name: "Kantor Pusat", groups: "Tetap di Grup D", color: "#bd6736" },
+];
+
+const MAPPING_POOLS = [
+  { categories: ["Cabang", "Outsourcing"], slotGroups: ["A", "B", "C"] },
+  { categories: ["Kantor Pusat"], slotGroups: ["D"] },
 ];
 
 const DEFAULT_MASTER_TEAMS = [
@@ -31,39 +36,43 @@ const GROUPS = [
   {
     id: "A",
     color: "#0c4f9e",
-    category: "Cabang",
+    category: "Cabang & Outsourcing",
+    allowedCategories: ["Cabang", "Outsourcing"],
     slots: [
-      ["A1", "Cabang 1"],
-      ["A2", "Cabang 2"],
-      ["A3", "Cabang 3"],
-      ["A4", "Cabang 4"],
+      ["A1", "Slot A1"],
+      ["A2", "Slot A2"],
+      ["A3", "Slot A3"],
+      ["A4", "Slot A4"],
     ],
   },
   {
     id: "B",
     color: "#138566",
-    category: "Cabang",
+    category: "Cabang & Outsourcing",
+    allowedCategories: ["Cabang", "Outsourcing"],
     slots: [
-      ["B1", "Cabang 5"],
-      ["B2", "Cabang 6"],
-      ["B3", "Cabang 7"],
-      ["B4", "Cabang 8"],
+      ["B1", "Slot B1"],
+      ["B2", "Slot B2"],
+      ["B3", "Slot B3"],
+      ["B4", "Slot B4"],
     ],
   },
   {
     id: "C",
     color: "#7b55a3",
-    category: "Outsourcing",
+    category: "Cabang & Outsourcing",
+    allowedCategories: ["Cabang", "Outsourcing"],
     slots: [
-      ["C1", "UG Mandiri 1"],
-      ["C2", "UG Mandiri 2"],
-      ["C3", "AVSEC JATSC"],
+      ["C1", "Slot C1"],
+      ["C2", "Slot C2"],
+      ["C3", "Slot C3"],
     ],
   },
   {
     id: "D",
     color: "#bd6736",
     category: "Kantor Pusat",
+    allowedCategories: ["Kantor Pusat"],
     slots: [
       ["D1", "Dit. SDM dan Umum"],
       ["D2", "Dit. Keuangan dan Manajemen Risiko"],
@@ -75,7 +84,12 @@ const GROUPS = [
 ];
 
 const TEAM_SLOTS = GROUPS.flatMap((group) =>
-  group.slots.map(([id]) => ({ id, group: group.id, category: group.category })),
+  group.slots.map(([id]) => ({
+    id,
+    group: group.id,
+    category: group.category,
+    allowedCategories: group.allowedCategories,
+  })),
 );
 const SLOT_BY_ID = Object.fromEntries(TEAM_SLOTS.map((slot) => [slot.id, slot]));
 const GROUP_MATCHES = GROUPS.flatMap((group) => createRoundRobin(group));
@@ -86,16 +100,16 @@ const KNOCKOUT_DEFS = [
   { id: "QF2", stage: "8 Besar", sourceHome: ["rank", "B", 0], sourceAway: ["rank", "A", 1] },
   { id: "QF3", stage: "8 Besar", sourceHome: ["rank", "C", 0], sourceAway: ["rank", "D", 1] },
   { id: "QF4", stage: "8 Besar", sourceHome: ["rank", "D", 0], sourceAway: ["rank", "C", 1] },
-  { id: "SF1", stage: "Semifinal", sourceHome: ["winner", "QF1"], sourceAway: ["winner", "QF2"] },
-  { id: "SF2", stage: "Semifinal", sourceHome: ["winner", "QF3"], sourceAway: ["winner", "QF4"] },
+  { id: "SF1", stage: "Semifinal", sourceHome: ["winner", "QF1"], sourceAway: ["winner", "QF3"] },
+  { id: "SF2", stage: "Semifinal", sourceHome: ["winner", "QF2"], sourceAway: ["winner", "QF4"] },
   { id: "THIRD", stage: "Perebutan Juara 3", sourceHome: ["loser", "SF1"], sourceAway: ["loser", "SF2"] },
   { id: "FINAL", stage: "Final", sourceHome: ["winner", "SF1"], sourceAway: ["winner", "SF2"] },
 ];
 
-const GROUP_DAY_BUNDLES = [
-  [["A", 0], ["B", 0], ["C", 0], ["D", 0], ["D", 1]],
-  [["A", 1], ["B", 1], ["C", 1], ["D", 2], ["D", 3]],
-  [["A", 2], ["B", 2], ["C", 2], ["D", 4]],
+const GROUP_DAY_SESSIONS = [
+  { morning: [["D", 0], ["A", 0]], afternoon: [["B", 0], ["D", 1], ["C", 0]] },
+  { morning: [["D", 2], ["B", 1]], afternoon: [["A", 1], ["D", 3], ["C", 1]] },
+  { morning: [["D", 4], ["A", 2]], afternoon: [["B", 2], ["C", 2]] },
 ];
 
 const DAY_DEFS = [
@@ -120,6 +134,7 @@ const els = {
   groupMatches: document.getElementById("groupMatches"),
   standingsGrid: document.getElementById("standingsGrid"),
   knockoutBracket: document.getElementById("knockoutBracket"),
+  thirdPlaceBracket: document.getElementById("thirdPlaceBracket"),
   podium: document.getElementById("podium"),
   scheduleDays: document.getElementById("scheduleDays"),
   recapTeamList: document.getElementById("recapTeamList"),
@@ -155,6 +170,7 @@ async function initialize() {
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.addEventListener("click", () => setView(tab.dataset.view));
   });
+  window.addEventListener("resize", drawKnockoutConnectors);
 
   els.title.addEventListener("input", (event) => {
     state.title = event.target.value;
@@ -295,7 +311,7 @@ function normalizeState(input) {
 }
 
 function isTeamAllowedInSlot(team, slotId) {
-  return Boolean(team && SLOT_BY_ID[slotId]?.category === team.category);
+  return Boolean(team && SLOT_BY_ID[slotId]?.allowedCategories.includes(team.category));
 }
 
 function normalizeResults(source, allowedIds, includeCards) {
@@ -391,6 +407,7 @@ function setView(view) {
     tab.classList.toggle("active", active);
     tab.setAttribute("aria-selected", String(active));
   });
+  if (view === "knockout") requestAnimationFrame(drawKnockoutConnectors);
 }
 
 function renderAll() {
@@ -790,9 +807,9 @@ function resolveKnockoutResult(home, away, result) {
 function renderKnockout(matches) {
   els.knockoutBracket.replaceChildren();
   const rounds = [
-    { className: "quarterfinal", code: "R01", label: "8 Besar", ids: ["QF1", "QF2", "QF3", "QF4"] },
+    { className: "quarterfinal", code: "R01", label: "8 Besar", ids: ["QF1", "QF3", "QF2", "QF4"] },
     { className: "semifinal", code: "R02", label: "Semifinal", ids: ["SF1", "SF2"] },
-    { className: "finals", code: "R03", label: "Finals", ids: ["FINAL", "THIRD"] },
+    { className: "finals", code: "R03", label: "Final", ids: ["FINAL"] },
   ];
   rounds.forEach((round) => {
     const section = document.createElement("section");
@@ -806,12 +823,17 @@ function renderKnockout(matches) {
     section.append(label, host);
     els.knockoutBracket.append(section);
   });
+  const thirdPlace = matches.find((match) => match.id === "THIRD");
+  els.thirdPlaceBracket.replaceChildren();
+  if (thirdPlace) els.thirdPlaceBracket.append(renderKnockoutMatch(thirdPlace));
+  requestAnimationFrame(drawKnockoutConnectors);
   renderPodium(matches);
 }
 
 function renderKnockoutMatch(match) {
   const card = document.createElement("article");
   card.className = "ko-match";
+  card.dataset.matchId = match.id;
   const head = document.createElement("div");
   head.className = "ko-match-head";
   const title = document.createElement("span");
@@ -848,6 +870,79 @@ function renderKnockoutMatch(match) {
     card.append(row);
   }
   return card;
+}
+
+function drawKnockoutConnectors() {
+  if (!els.knockoutBracket || els.knockoutBracket.hidden || els.knockoutBracket.offsetParent === null) return;
+  els.knockoutBracket.querySelector(".bracket-connectors")?.remove();
+  ["SF1", "SF2", "FINAL"].forEach((matchId) => {
+    const match = els.knockoutBracket.querySelector(`[data-match-id="${matchId}"]`);
+    if (match) match.style.removeProperty("transform");
+  });
+  centerMatchBetween("SF1", "QF1", "QF3");
+  centerMatchBetween("SF2", "QF2", "QF4");
+  centerMatchBetween("FINAL", "SF1", "SF2");
+
+  const namespace = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(namespace, "svg");
+  svg.classList.add("bracket-connectors");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("width", String(els.knockoutBracket.scrollWidth));
+  svg.setAttribute("height", String(els.knockoutBracket.scrollHeight));
+  svg.setAttribute("viewBox", `0 0 ${els.knockoutBracket.scrollWidth} ${els.knockoutBracket.scrollHeight}`);
+
+  const routePairs = [
+    ["QF1", "QF3", "SF1"],
+    ["QF2", "QF4", "SF2"],
+    ["SF1", "SF2", "FINAL"],
+  ];
+  routePairs.forEach((route) => appendForkConnector(svg, ...route));
+  els.knockoutBracket.prepend(svg);
+}
+
+function centerMatchBetween(targetId, firstSourceId, secondSourceId) {
+  const firstSource = els.knockoutBracket.querySelector(`[data-match-id="${firstSourceId}"]`);
+  const secondSource = els.knockoutBracket.querySelector(`[data-match-id="${secondSourceId}"]`);
+  const target = els.knockoutBracket.querySelector(`[data-match-id="${targetId}"]`);
+  if (!firstSource || !secondSource || !target) return;
+
+  const firstRect = firstSource.getBoundingClientRect();
+  const secondRect = secondSource.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+  const desiredCenter = (
+    firstRect.top + firstRect.height / 2 + secondRect.top + secondRect.height / 2
+  ) / 2;
+  const currentCenter = targetRect.top + targetRect.height / 2;
+  target.style.transform = `translateY(${desiredCenter - currentCenter}px)`;
+}
+
+function appendForkConnector(svg, firstSourceId, secondSourceId, targetId) {
+  const firstSource = els.knockoutBracket.querySelector(`[data-match-id="${firstSourceId}"]`);
+  const secondSource = els.knockoutBracket.querySelector(`[data-match-id="${secondSourceId}"]`);
+  const target = els.knockoutBracket.querySelector(`[data-match-id="${targetId}"]`);
+  if (!firstSource || !secondSource || !target) return;
+
+  const bracketRect = els.knockoutBracket.getBoundingClientRect();
+  const firstRect = firstSource.getBoundingClientRect();
+  const secondRect = secondSource.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+  const firstX = firstRect.right - bracketRect.left + els.knockoutBracket.scrollLeft;
+  const firstY = firstRect.top + firstRect.height / 2 - bracketRect.top + els.knockoutBracket.scrollTop;
+  const secondX = secondRect.right - bracketRect.left + els.knockoutBracket.scrollLeft;
+  const secondY = secondRect.top + secondRect.height / 2 - bracketRect.top + els.knockoutBracket.scrollTop;
+  const endX = targetRect.left - bracketRect.left + els.knockoutBracket.scrollLeft;
+  const endY = targetRect.top + targetRect.height / 2 - bracketRect.top + els.knockoutBracket.scrollTop;
+  const corridorX = Math.max(firstX, secondX) + (endX - Math.max(firstX, secondX)) / 2;
+  const joinY = (firstY + secondY) / 2;
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", [
+    `M ${firstX} ${firstY} H ${corridorX}`,
+    `M ${secondX} ${secondY} H ${corridorX}`,
+    `M ${corridorX} ${Math.min(firstY, secondY)} V ${Math.max(firstY, secondY)}`,
+    `M ${corridorX} ${joinY} H ${endX} V ${endY}`,
+  ].join(" "));
+  path.classList.add("bracket-connector");
+  svg.append(path);
 }
 
 function createKnockoutSlot(match, side) {
@@ -919,8 +1014,8 @@ function openKnockoutMatchDialog(match) {
 
 function clearInvalidDownstreamResults(changedId) {
   const downstream = {
-    QF1: ["SF1", "FINAL", "THIRD"], QF2: ["SF1", "FINAL", "THIRD"],
-    QF3: ["SF2", "FINAL", "THIRD"], QF4: ["SF2", "FINAL", "THIRD"],
+    QF1: ["SF1", "FINAL", "THIRD"], QF2: ["SF2", "FINAL", "THIRD"],
+    QF3: ["SF1", "FINAL", "THIRD"], QF4: ["SF2", "FINAL", "THIRD"],
     SF1: ["FINAL", "THIRD"], SF2: ["FINAL", "THIRD"],
   };
   (downstream[changedId] || []).forEach((id) => { delete state.knockoutResults[id]; });
@@ -949,10 +1044,7 @@ function renderPodium(matches) {
 function renderSchedule(knockout) {
   els.scheduleDays.replaceChildren();
   DAY_DEFS.forEach((day, dayIndex) => {
-    const selected = GROUP_DAY_BUNDLES[dayIndex].flatMap(([groupId, round]) =>
-      GROUP_MATCHES.filter((match) => match.group === groupId && match.round === round),
-    );
-    const ordered = orderDayMatches(selected);
+    const ordered = buildGroupDaySchedule(dayIndex);
     renderScheduleDay(day.date, day.label, ordered.map((match, index) => ({
       id: match.id,
       time: day.times[index],
@@ -966,8 +1058,8 @@ function renderSchedule(knockout) {
   const knockoutById = Object.fromEntries(knockout.map((match) => [match.id, match]));
   renderScheduleDay("Kamis, 10 September 2026", "8 besar & semifinal", [
     scheduleKnockout("QF1", "07:30", knockoutById),
-    scheduleKnockout("QF2", "08:00", knockoutById),
-    scheduleKnockout("QF3", "08:30", knockoutById),
+    scheduleKnockout("QF3", "08:00", knockoutById),
+    scheduleKnockout("QF2", "08:30", knockoutById),
     scheduleKnockout("QF4", "09:00", knockoutById),
     { breakLabel: "Istirahat dan persiapan semifinal" },
     scheduleKnockout("SF1", "16:00", knockoutById),
@@ -977,6 +1069,33 @@ function renderSchedule(knockout) {
     scheduleKnockout("THIRD", "16:00", knockoutById),
     scheduleKnockout("FINAL", "17:00", knockoutById),
   ]);
+}
+
+function buildGroupDaySchedule(dayIndex) {
+  const sessions = GROUP_DAY_SESSIONS[dayIndex];
+  if (!sessions) return [];
+  const morning = orderDayMatches(selectGroupMatches(sessions.morning));
+  const afternoon = centerGroupMatches(selectGroupMatches(sessions.afternoon), "D");
+  return [...morning, ...afternoon];
+}
+
+function selectGroupMatches(bundles) {
+  return bundles.flatMap(([groupId, round]) =>
+    GROUP_MATCHES.filter((match) => match.group === groupId && match.round === round),
+  );
+}
+
+function centerGroupMatches(matches, groupId) {
+  const ordered = orderDayMatches(matches);
+  const groupMatches = ordered.filter((match) => match.group === groupId);
+  if (!groupMatches.length) return ordered;
+  const otherMatches = ordered.filter((match) => match.group !== groupId);
+  const insertionIndex = Math.max(1, Math.floor(otherMatches.length / 2));
+  return [
+    ...otherMatches.slice(0, insertionIndex),
+    ...groupMatches,
+    ...otherMatches.slice(insertionIndex),
+  ];
 }
 
 function orderDayMatches(matches) {
@@ -1261,11 +1380,11 @@ function renderMapping() {
 
 function createRandomMapping() {
   const mapping = structuredClone(DEFAULT_STATE.mapping);
-  CATEGORY_CONFIG.forEach((category) => {
+  MAPPING_POOLS.forEach((pool) => {
     const slots = TEAM_SLOTS
-      .filter((slot) => category.slotGroups.includes(slot.group))
+      .filter((slot) => pool.slotGroups.includes(slot.group))
       .map((slot) => slot.id);
-    const teams = shuffle(masterTeams.filter((team) => team.category === category.name));
+    const teams = shuffle(masterTeams.filter((team) => pool.categories.includes(team.category)));
     slots.forEach((slotId, index) => {
       mapping[slotId] = teams[index]?.id || null;
     });

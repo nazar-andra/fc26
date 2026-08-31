@@ -74,16 +74,17 @@
         <section class="view-panel" id="knockoutView" data-panel="knockout" hidden>
           <div class="section-head">
             <div><p class="section-code">THE RUN-IN</p><h2>Fase gugur</h2></div>
-            <p>Jika skor imbang, isi skor penalti untuk menentukan tim yang melaju.</p>
+            <p>Bracket disilang agar tim dari grup yang sama baru dapat bertemu lagi di final.</p>
           </div>
           <div id="knockoutBracket" class="knockout-bracket"></div>
+          <div id="thirdPlaceBracket" class="third-place-bracket" aria-label="Perebutan juara 3"></div>
           <div id="podium" class="podium"></div>
         </section>
 
         <section class="view-panel" id="scheduleView" data-panel="schedule" hidden>
           <div class="section-head">
             <div><p class="section-code">ONE COURT / 30 MIN</p><h2>Jadwal pertandingan</h2></div>
-            <p>Disusun untuk satu lapangan dengan jeda antarlaga setiap tim.</p>
+            <p>Grup D membuka sesi pagi dan bermain di tengah sesi sore. Tim yang bermain dua kali sehari tetap mendapat jeda antarsesi.</p>
           </div>
           <div id="scheduleDays" class="schedule-days"></div>
         </section>
@@ -102,7 +103,7 @@
         <section class="view-panel" id="mappingView" data-panel="mapping" hidden>
           <div class="section-head">
             <div><p class="section-code">CATEGORY DRAW</p><h2>Mapping nama tim</h2></div>
-            <p>Nama diacak hanya ke slot yang sesuai kategorinya. Struktur grup tetap 4—4—3—5.</p>
+            <p>Cabang dan Outsourcing diacak bersama ke Grup A/B/C. Kantor Pusat tetap di Grup D.</p>
           </div>
           <div class="mapping-toolbar">
             <span id="mappingMeta" class="mapping-meta">0 dari 16 tim terpasang</span>
@@ -126,6 +127,7 @@
               <li><strong>Urutan klasemen</strong><span>Poin, selisih gol, jumlah gol, head-to-head, lalu fair play.</span></li>
               <li><strong>Head-to-head</strong><span>Jika lebih dari dua tim sama, digunakan klasemen mini antar tim terkait.</span></li>
               <li><strong>Kelolosan</strong><span>Dua tim teratas setiap grup masuk ke babak 8 besar.</span></li>
+              <li><strong>Bracket silang</strong><span>Tim dari grup yang sama ditempatkan di sisi berbeda dan baru dapat bertemu lagi di final.</span></li>
               <li><strong>Skor imbang fase gugur</strong><span>Pemenang ditentukan melalui input hasil adu penalti.</span></li>
               <li><strong>Hasil tetap identik</strong><span>Panitia menetapkan urutan atau pemenang secara manual.</span></li>
             </ol>
