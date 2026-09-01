@@ -261,9 +261,18 @@ function renderSchedule() {
     (total, section) => total + section.matches.length,
     0,
   );
+  const completedMatches = scheduleData.sections.reduce(
+    (total, section) =>
+      total +
+      section.matches.filter((match) => {
+        const liveMatch = findScheduledBracketMatch(match.id);
+        return Boolean(liveMatch?.winner && !liveMatch.winner.isBye);
+      }).length,
+    0,
+  );
   els.scheduleSubtitle.textContent =
     scheduleData.subtitle || "Jadwal pertandingan turnamen";
-  els.scheduleMeta.textContent = `${totalMatches} pertandingan terjadwal`;
+  els.scheduleMeta.textContent = `${completedMatches} dari ${totalMatches} sudah main`;
 
   scheduleData.sections.forEach((section) => {
     const sectionEl = document.createElement("article");
@@ -286,7 +295,7 @@ function renderSchedule() {
     table.className = "schedule-table";
     table.innerHTML = `
       <thead>
-        <tr><th>Match</th><th>Waktu</th><th>Pertandingan</th></tr>
+        <tr><th>Match</th><th>Waktu</th><th>Pertandingan</th><th>Skor</th><th>Status</th></tr>
       </thead>
     `;
     const body = document.createElement("tbody");
@@ -297,12 +306,29 @@ function renderSchedule() {
       const participantLabel = liveMatch
         ? getLiveMatchLabel(liveMatch)
         : formatScheduleMatchLabel(match.match);
+      const hasPlayed = Boolean(liveMatch?.winner && !liveMatch.winner.isBye);
       [match.id, match.time, participantLabel].forEach((value) => {
         const cell = document.createElement("td");
         cell.textContent = value;
         row.append(cell);
       });
+
+      const scoreCell = document.createElement("td");
+      const score = document.createElement("span");
+      score.className = `schedule-score${hasPlayed ? " is-complete" : ""}`;
+      score.textContent = formatScheduleScore(liveMatch?.score);
+      scoreCell.append(score);
+      row.append(scoreCell);
+
+      const statusCell = document.createElement("td");
+      const status = document.createElement("span");
+      status.className = `schedule-status ${hasPlayed ? "is-complete" : "is-pending"}`;
+      status.textContent = hasPlayed ? "Sudah main" : "Belum main";
+      statusCell.append(status);
+      row.append(statusCell);
+
       if (liveMatch) row.classList.add("schedule-live");
+      if (hasPlayed) row.classList.add("schedule-complete");
       body.append(row);
     });
 
@@ -310,6 +336,16 @@ function renderSchedule() {
     sectionEl.append(heading, table);
     els.scheduleContent.append(sectionEl);
   });
+}
+
+function formatScheduleScore(score) {
+  if (!Array.isArray(score)) return "—";
+
+  const scoreA = score[0] === "" || score[0] == null ? "—" : score[0];
+  const scoreB = score[1] === "" || score[1] == null ? "—" : score[1];
+  if (scoreA === "—" && scoreB === "—") return "—";
+
+  return `${scoreA} – ${scoreB}`;
 }
 
 function renderMapping() {
