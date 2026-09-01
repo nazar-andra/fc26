@@ -502,28 +502,33 @@ h2 {
 
 .schedule-table th:first-child,
 .schedule-table td:first-child {
-  width: 18%;
+  width: 8%;
   color: #2445af;
   font-weight: 700;
 }
 
 .schedule-table th:nth-child(2),
 .schedule-table td:nth-child(2) {
-  width: 23%;
+  width: 14%;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
+.schedule-table th:nth-child(-n + 2),
+.schedule-table td:nth-child(-n + 2) {
+  padding-inline: 12px;
+}
+
 .schedule-table th:nth-child(4),
 .schedule-table td:nth-child(4) {
-  width: 12%;
+  width: 7%;
   text-align: center;
   white-space: nowrap;
 }
 
 .schedule-table th:last-child,
 .schedule-table td:last-child {
-  width: 18%;
+  width: 14%;
   text-align: right;
   white-space: nowrap;
 }
@@ -1491,28 +1496,113 @@ input::placeholder {
     flex-direction: column;
   }
 
-  .schedule-table th,
-  .schedule-table td {
-    padding-inline: 10px;
+  .schedule-section {
+    border: 0;
+    background: transparent;
   }
 
-  .schedule-table th:nth-child(2),
-  .schedule-table td:nth-child(2) {
-    width: 23%;
+  .schedule-section-head {
+    border: 1px solid rgba(96, 110, 132, 0.14);
+    border-radius: 13px;
   }
 
-  .schedule-table th:nth-child(4),
-  .schedule-table td:nth-child(4) {
-    width: 14%;
+  .schedule-table,
+  .schedule-table tbody {
+    display: block;
+    width: 100%;
   }
 
-  .schedule-table th:last-child,
-  .schedule-table td:last-child {
-    width: 22%;
+  .schedule-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .schedule-table tbody {
+    display: grid;
+    gap: 10px;
+    padding-top: 10px;
+  }
+
+  .schedule-table tbody tr {
+    display: grid;
+    grid-template-areas:
+      "match time"
+      "matchup matchup"
+      "score status";
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 14px;
+    padding: 13px 14px;
+    border: 1px solid rgba(96, 110, 132, 0.14);
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 5px 14px rgba(31, 53, 104, 0.05);
+  }
+
+  .schedule-table tbody tr.schedule-complete {
+    border-color: rgba(23, 122, 82, 0.2);
+    background: rgba(247, 252, 249, 0.98);
+  }
+
+  .schedule-table tbody td {
+    width: auto;
+    padding: 0;
+    border: 0;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .schedule-table tbody td:nth-child(1) {
+    grid-area: match;
+    font-size: 0.78rem;
+  }
+
+  .schedule-table tbody td:nth-child(2) {
+    grid-area: time;
+    color: var(--muted);
+    font-size: 0.74rem;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .schedule-table tbody td:nth-child(3) {
+    grid-area: matchup;
+    padding-block: 9px 10px;
+    border-block: 1px solid rgba(96, 110, 132, 0.1);
+    font-size: 0.82rem;
+  }
+
+  .schedule-table tbody td:nth-child(4) {
+    grid-area: score;
+    text-align: left;
+  }
+
+  .schedule-table tbody td:nth-child(4)::before {
+    content: "Skor";
+    margin-right: 8px;
+    color: var(--subtle);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .schedule-table tbody td:nth-child(5) {
+    grid-area: status;
+    text-align: right;
+  }
+
+  .schedule-matchup {
+    display: block;
+    line-height: 1.65;
   }
 
   .schedule-status {
-    font-size: 0.65rem;
+    font-size: 0.68rem;
   }
 
   .bracket {
