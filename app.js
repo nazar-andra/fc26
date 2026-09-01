@@ -307,11 +307,19 @@ function renderSchedule() {
         ? getLiveMatchLabel(liveMatch)
         : formatScheduleMatchLabel(match.match);
       const hasPlayed = Boolean(liveMatch?.winner && !liveMatch.winner.isBye);
-      [match.id, match.time, participantLabel].forEach((value) => {
+      [match.id, match.time].forEach((value) => {
         const cell = document.createElement("td");
         cell.textContent = value;
         row.append(cell);
       });
+
+      const matchupCell = document.createElement("td");
+      if (liveMatch) {
+        matchupCell.append(createScheduleMatchup(liveMatch, participantLabel));
+      } else {
+        matchupCell.textContent = participantLabel;
+      }
+      row.append(matchupCell);
 
       const scoreCell = document.createElement("td");
       const score = document.createElement("span");
@@ -458,12 +466,39 @@ function findBracketMatch(roundId, matchIndex) {
 
 function getLiveMatchLabel(match) {
   return (match.participants || [])
-    .map((participant) => {
-      if (!participant || participant.isPending) return "Menunggu hasil";
-      if (participant.isBye) return "BYE";
-      return formatScheduleTeamLabel(participant.name) || "Menunggu hasil";
-    })
+    .map(getLiveParticipantLabel)
     .join(" vs ");
+}
+
+function getLiveParticipantLabel(participant) {
+  if (!participant || participant.isPending) return "Menunggu hasil";
+  if (participant.isBye) return "BYE";
+  return formatScheduleTeamLabel(participant.name) || "Menunggu hasil";
+}
+
+function createScheduleMatchup(match, accessibleLabel) {
+  const matchup = document.createElement("span");
+  matchup.className = "schedule-matchup";
+  matchup.setAttribute("aria-label", accessibleLabel);
+
+  (match.participants || []).forEach((participant, index) => {
+    if (index > 0) {
+      const separator = document.createElement("span");
+      separator.className = "schedule-versus";
+      separator.textContent = "vs";
+      separator.setAttribute("aria-hidden", "true");
+      matchup.append(separator);
+    }
+
+    const team = document.createElement("span");
+    team.className = `schedule-team${participant?.winner ? " is-winner" : ""}`;
+    team.textContent = getLiveParticipantLabel(participant);
+    team.setAttribute("aria-hidden", "true");
+    if (participant?.winner) team.title = "Pemenang";
+    matchup.append(team);
+  });
+
+  return matchup;
 }
 
 function formatScheduleMatchLabel(label) {

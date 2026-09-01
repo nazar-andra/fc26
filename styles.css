@@ -545,6 +545,32 @@ h2 {
   color: #177a52;
 }
 
+.schedule-matchup {
+  line-height: 1.65;
+}
+
+.schedule-versus {
+  margin-inline: 5px;
+  color: var(--subtle);
+  font-size: 0.68rem;
+  font-weight: 500;
+}
+
+.schedule-team.is-winner {
+  padding: 2px 5px;
+  border-radius: 5px;
+  background: rgba(23, 122, 82, 0.1);
+  box-decoration-break: clone;
+  color: #11633f;
+  font-weight: 800;
+  -webkit-box-decoration-break: clone;
+}
+
+.schedule-team.is-winner::after {
+  content: " \2713";
+  font-size: 0.7em;
+}
+
 .schedule-score {
   color: var(--subtle);
   font-size: 0.78rem;
