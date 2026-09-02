@@ -322,10 +322,14 @@ function renderSchedule() {
       row.append(matchupCell);
 
       const scoreCell = document.createElement("td");
-      const score = document.createElement("span");
-      score.className = `schedule-score${hasPlayed ? " is-complete" : ""}`;
-      score.textContent = formatScheduleScore(liveMatch?.score);
-      scoreCell.append(score);
+      if (liveMatch) {
+        scoreCell.append(createScheduleScoreEditor(liveMatch, hasPlayed));
+      } else {
+        const score = document.createElement("span");
+        score.className = "schedule-score";
+        score.textContent = "—";
+        scoreCell.append(score);
+      }
       row.append(scoreCell);
 
       const statusCell = document.createElement("td");
@@ -344,6 +348,45 @@ function renderSchedule() {
     sectionEl.append(heading, table);
     els.scheduleContent.append(sectionEl);
   });
+}
+
+function createScheduleScoreEditor(match, hasPlayed) {
+  const editor = document.createElement("div");
+  editor.className = `schedule-score-editor${hasPlayed ? " is-complete" : ""}`;
+
+  match.participants.forEach((participant, slotIndex) => {
+    if (slotIndex > 0) {
+      const separator = document.createElement("span");
+      separator.className = "schedule-score-separator";
+      separator.textContent = "–";
+      separator.setAttribute("aria-hidden", "true");
+      editor.append(separator);
+    }
+
+    const input = document.createElement("input");
+    input.className = "schedule-score-input";
+    input.type = "number";
+    input.min = "0";
+    input.step = "1";
+    input.inputMode = "numeric";
+    input.placeholder = "0";
+    input.value = match.score[slotIndex] ?? "";
+    input.readOnly = viewOnly;
+    input.disabled =
+      participant?.isBye || participant?.isPending || !match.isPlayable;
+    input.dataset.matchId = match.id;
+    input.dataset.slotIndex = String(slotIndex);
+    input.setAttribute(
+      "aria-label",
+      `${match.label} ${slotIndex === 0 ? "home" : "away"} score`,
+    );
+    input.addEventListener("input", (event) => {
+      setScore(match.id, slotIndex, event.target.value, true);
+    });
+    editor.append(input);
+  });
+
+  return editor;
 }
 
 function formatScheduleScore(score) {
@@ -1175,13 +1218,23 @@ function getTeamNumber(label) {
   return Number.isInteger(number) ? number : null;
 }
 
-function setScore(matchId, slotIndex, value) {
+function setScore(matchId, slotIndex, value, restoreScheduleFocus = false) {
   const score = normalizeScoreValue(value);
   state.scores[matchId] ||= ["", ""];
   state.scores[matchId][slotIndex] = score;
   persist();
   renderBracket();
   renderSchedule();
+
+  if (restoreScheduleFocus) {
+    const nextInput = [...document.querySelectorAll(".schedule-score-input")]
+      .find(
+        (input) =>
+          input.dataset.matchId === matchId &&
+          input.dataset.slotIndex === String(slotIndex),
+      );
+    nextInput?.focus({ preventScroll: true });
+  }
 }
 
 function normalizeScoreValue(value) {

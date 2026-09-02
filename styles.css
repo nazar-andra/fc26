@@ -521,7 +521,7 @@ h2 {
 
 .schedule-table th:nth-child(4),
 .schedule-table td:nth-child(4) {
-  width: 7%;
+  width: 12%;
   text-align: center;
   white-space: nowrap;
 }
@@ -585,6 +585,63 @@ h2 {
 
 .schedule-score.is-complete {
   color: #177a52;
+}
+
+.schedule-score-editor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.schedule-score-input {
+  width: 38px;
+  height: 32px;
+  padding: 0 4px;
+  border: 1px solid rgba(96, 110, 132, 0.28);
+  border-radius: 7px;
+  background: #ffffff;
+  color: #1c2d58;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  outline: none;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.schedule-score-input::-webkit-inner-spin-button,
+.schedule-score-input::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+.schedule-score-input:focus {
+  border-color: #3159d8;
+  box-shadow: 0 0 0 3px rgba(49, 89, 216, 0.13);
+}
+
+.schedule-score-input:disabled {
+  border-color: rgba(96, 110, 132, 0.12);
+  background: #f3f5f8;
+  color: #a4acb8;
+  cursor: not-allowed;
+}
+
+.schedule-score-editor.is-complete .schedule-score-input {
+  border-color: rgba(23, 122, 82, 0.3);
+  color: #177a52;
+}
+
+.schedule-score-separator {
+  color: var(--subtle);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.view-only .schedule-score-input:not(:disabled) {
+  pointer-events: none;
 }
 
 .schedule-status {
