@@ -35,6 +35,7 @@ const DEFAULT_MASTER_TEAMS = [
 const GROUPS = [
   {
     id: "A",
+    qualifiers: 2,
     color: "#0c4f9e",
     category: "Cabang & Outsourcing",
     allowedCategories: ["Cabang", "Outsourcing"],
@@ -47,6 +48,7 @@ const GROUPS = [
   },
   {
     id: "B",
+    qualifiers: 2,
     color: "#138566",
     category: "Cabang & Outsourcing",
     allowedCategories: ["Cabang", "Outsourcing"],
@@ -59,6 +61,7 @@ const GROUPS = [
   },
   {
     id: "C",
+    qualifiers: 1,
     color: "#7b55a3",
     category: "Cabang & Outsourcing",
     allowedCategories: ["Cabang", "Outsourcing"],
@@ -70,6 +73,7 @@ const GROUPS = [
   },
   {
     id: "D",
+    qualifiers: 3,
     color: "#bd6736",
     category: "Kantor Pusat",
     allowedCategories: ["Kantor Pusat"],
@@ -96,12 +100,12 @@ const GROUP_MATCHES = GROUPS.flatMap((group) => createRoundRobin(group));
 const GROUP_MATCH_BY_ID = Object.fromEntries(GROUP_MATCHES.map((match) => [match.id, match]));
 
 const KNOCKOUT_DEFS = [
-  { id: "QF1", stage: "8 Besar", sourceHome: ["rank", "A", 0], sourceAway: ["rank", "B", 1] },
-  { id: "QF2", stage: "8 Besar", sourceHome: ["rank", "B", 0], sourceAway: ["rank", "A", 1] },
-  { id: "QF3", stage: "8 Besar", sourceHome: ["rank", "C", 0], sourceAway: ["rank", "D", 1] },
-  { id: "QF4", stage: "8 Besar", sourceHome: ["rank", "D", 0], sourceAway: ["rank", "C", 1] },
-  { id: "SF1", stage: "Semifinal", sourceHome: ["winner", "QF1"], sourceAway: ["winner", "QF3"] },
-  { id: "SF2", stage: "Semifinal", sourceHome: ["winner", "QF2"], sourceAway: ["winner", "QF4"] },
+  { id: "QF1", stage: "8 Besar", sourceHome: ["rank", "A", 0], sourceAway: ["rank", "D", 1] },
+  { id: "QF2", stage: "8 Besar", sourceHome: ["rank", "B", 0], sourceAway: ["rank", "D", 2] },
+  { id: "QF3", stage: "8 Besar", sourceHome: ["rank", "C", 0], sourceAway: ["rank", "B", 1] },
+  { id: "QF4", stage: "8 Besar", sourceHome: ["rank", "D", 0], sourceAway: ["rank", "A", 1] },
+  { id: "SF1", stage: "Semifinal", sourceHome: ["winner", "QF1"], sourceAway: ["winner", "QF2"] },
+  { id: "SF2", stage: "Semifinal", sourceHome: ["winner", "QF3"], sourceAway: ["winner", "QF4"] },
   { id: "THIRD", stage: "Perebutan Juara 3", sourceHome: ["loser", "SF1"], sourceAway: ["loser", "SF2"] },
   { id: "FINAL", stage: "Final", sourceHome: ["winner", "SF1"], sourceAway: ["winner", "SF2"] },
 ];
@@ -720,7 +724,7 @@ function renderStandings(standings) {
     const body = document.createElement("tbody");
     standings[group.id].forEach((row, index) => {
       const tr = document.createElement("tr");
-      if (index < 2) tr.className = "qualified";
+      if (index < group.qualifiers) tr.className = "qualified";
       const values = [index + 1, null, row.played, row.wins, row.draws, row.losses, row.gf, row.ga, signed(row.gd), row.fairPlay, row.points];
       values.forEach((value, cellIndex) => {
         const td = document.createElement("td");
@@ -807,7 +811,7 @@ function resolveKnockoutResult(home, away, result) {
 function renderKnockout(matches) {
   els.knockoutBracket.replaceChildren();
   const rounds = [
-    { className: "quarterfinal", code: "R01", label: "8 Besar", ids: ["QF1", "QF3", "QF2", "QF4"] },
+    { className: "quarterfinal", code: "R01", label: "8 Besar", ids: ["QF1", "QF2", "QF3", "QF4"] },
     { className: "semifinal", code: "R02", label: "Semifinal", ids: ["SF1", "SF2"] },
     { className: "finals", code: "R03", label: "Final", ids: ["FINAL"] },
   ];
@@ -879,8 +883,8 @@ function drawKnockoutConnectors() {
     const match = els.knockoutBracket.querySelector(`[data-match-id="${matchId}"]`);
     if (match) match.style.removeProperty("transform");
   });
-  centerMatchBetween("SF1", "QF1", "QF3");
-  centerMatchBetween("SF2", "QF2", "QF4");
+  centerMatchBetween("SF1", "QF1", "QF2");
+  centerMatchBetween("SF2", "QF3", "QF4");
   centerMatchBetween("FINAL", "SF1", "SF2");
 
   const namespace = "http://www.w3.org/2000/svg";
@@ -892,8 +896,8 @@ function drawKnockoutConnectors() {
   svg.setAttribute("viewBox", `0 0 ${els.knockoutBracket.scrollWidth} ${els.knockoutBracket.scrollHeight}`);
 
   const routePairs = [
-    ["QF1", "QF3", "SF1"],
-    ["QF2", "QF4", "SF2"],
+    ["QF1", "QF2", "SF1"],
+    ["QF3", "QF4", "SF2"],
     ["SF1", "SF2", "FINAL"],
   ];
   routePairs.forEach((route) => appendForkConnector(svg, ...route));
@@ -959,7 +963,10 @@ function createKnockoutSlot(match, side) {
 }
 
 function sourcePlaceholder(source) {
-  if (source[0] === "rank") return `Peringkat ${source[2] + 1} Grup ${source[1]}`;
+  if (source[0] === "rank") {
+    const rankLabel = ["Juara", "Runner-up", "Peringkat 3"][source[2]] || `Peringkat ${source[2] + 1}`;
+    return `${rankLabel} Grup ${source[1]}`;
+  }
   return `${source[0] === "winner" ? "Pemenang" : "Kalah"} ${source[1]}`;
 }
 
@@ -1014,8 +1021,8 @@ function openKnockoutMatchDialog(match) {
 
 function clearInvalidDownstreamResults(changedId) {
   const downstream = {
-    QF1: ["SF1", "FINAL", "THIRD"], QF2: ["SF2", "FINAL", "THIRD"],
-    QF3: ["SF1", "FINAL", "THIRD"], QF4: ["SF2", "FINAL", "THIRD"],
+    QF1: ["SF1", "FINAL", "THIRD"], QF2: ["SF1", "FINAL", "THIRD"],
+    QF3: ["SF2", "FINAL", "THIRD"], QF4: ["SF2", "FINAL", "THIRD"],
     SF1: ["FINAL", "THIRD"], SF2: ["FINAL", "THIRD"],
   };
   (downstream[changedId] || []).forEach((id) => { delete state.knockoutResults[id]; });
@@ -1058,8 +1065,8 @@ function renderSchedule(knockout) {
   const knockoutById = Object.fromEntries(knockout.map((match) => [match.id, match]));
   renderScheduleDay("Kamis, 10 September 2026", "8 besar & semifinal", [
     scheduleKnockout("QF1", "07:30", knockoutById),
-    scheduleKnockout("QF3", "08:00", knockoutById),
-    scheduleKnockout("QF2", "08:30", knockoutById),
+    scheduleKnockout("QF2", "08:00", knockoutById),
+    scheduleKnockout("QF3", "08:30", knockoutById),
     scheduleKnockout("QF4", "09:00", knockoutById),
     { breakLabel: "Istirahat dan persiapan semifinal" },
     scheduleKnockout("SF1", "16:00", knockoutById),
