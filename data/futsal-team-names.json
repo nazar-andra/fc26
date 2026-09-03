@@ -40,6 +40,11 @@
     "category": "Cabang"
   },
   {
+    "id": "cabang-09",
+    "name": "PIA",
+    "category": "Cabang"
+  },
+  {
     "id": "outsourcing-01",
     "name": "UGM 1",
     "category": "Outsourcing"

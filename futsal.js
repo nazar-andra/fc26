@@ -22,6 +22,7 @@ const DEFAULT_MASTER_TEAMS = [
   { id: "cabang-06", name: "JATSC 2", category: "Cabang" },
   { id: "cabang-07", name: "Banjarmasin", category: "Cabang" },
   { id: "cabang-08", name: "MATSC", category: "Cabang" },
+  { id: "cabang-09", name: "PIA", category: "Cabang" },
   { id: "outsourcing-01", name: "UGM 1", category: "Outsourcing" },
   { id: "outsourcing-02", name: "UGM 2", category: "Outsourcing" },
   { id: "outsourcing-03", name: "AVSEC JATSC", category: "Outsourcing" },
@@ -61,7 +62,7 @@ const GROUPS = [
   },
   {
     id: "C",
-    qualifiers: 1,
+    qualifiers: 2,
     color: "#7b55a3",
     category: "Cabang & Outsourcing",
     allowedCategories: ["Cabang", "Outsourcing"],
@@ -69,11 +70,12 @@ const GROUPS = [
       ["C1", "Slot C1"],
       ["C2", "Slot C2"],
       ["C3", "Slot C3"],
+      ["C4", "Slot C4"],
     ],
   },
   {
     id: "D",
-    qualifiers: 3,
+    qualifiers: 2,
     color: "#bd6736",
     category: "Kantor Pusat",
     allowedCategories: ["Kantor Pusat"],
@@ -101,7 +103,7 @@ const GROUP_MATCH_BY_ID = Object.fromEntries(GROUP_MATCHES.map((match) => [match
 
 const KNOCKOUT_DEFS = [
   { id: "QF1", stage: "8 Besar", sourceHome: ["rank", "A", 0], sourceAway: ["rank", "D", 1] },
-  { id: "QF2", stage: "8 Besar", sourceHome: ["rank", "B", 0], sourceAway: ["rank", "D", 2] },
+  { id: "QF2", stage: "8 Besar", sourceHome: ["rank", "B", 0], sourceAway: ["rank", "C", 1] },
   { id: "QF3", stage: "8 Besar", sourceHome: ["rank", "C", 0], sourceAway: ["rank", "B", 1] },
   { id: "QF4", stage: "8 Besar", sourceHome: ["rank", "D", 0], sourceAway: ["rank", "A", 1] },
   { id: "SF1", stage: "Semifinal", sourceHome: ["winner", "QF1"], sourceAway: ["winner", "QF2"] },
@@ -117,9 +119,9 @@ const GROUP_DAY_SESSIONS = [
 ];
 
 const DAY_DEFS = [
-  { date: "Senin, 07 September 2026", label: "Penyisihan hari I", times: ["07:30", "08:00", "08:30", "09:00", "16:00", "16:30", "17:00", "17:30", "18:00"] },
-  { date: "Selasa, 08 September 2026", label: "Penyisihan hari II", times: ["07:30", "08:00", "08:30", "09:00", "16:00", "16:30", "17:00", "17:30", "18:00"] },
-  { date: "Rabu, 09 September 2026", label: "Penyisihan hari III", times: ["07:30", "08:00", "08:30", "09:00", "16:00", "16:30", "17:00"] },
+  { date: "Senin, 07 September 2026", label: "Penyisihan hari I", times: ["07:30", "08:00", "08:30", "09:00", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30"] },
+  { date: "Selasa, 08 September 2026", label: "Penyisihan hari II", times: ["07:30", "08:00", "08:30", "09:00", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30"] },
+  { date: "Rabu, 09 September 2026", label: "Penyisihan hari III", times: ["07:30", "08:00", "08:30", "09:00", "16:00", "16:30", "17:00", "17:30"] },
 ];
 
 const DEFAULT_STATE = {
@@ -425,7 +427,7 @@ function renderAll() {
   renderMapping();
   const completedGroups = GROUP_MATCHES.filter((match) => isGroupMatchComplete(match.id)).length;
   const completedKnockout = knockout.filter((match) => Boolean(match.winner)).length;
-  els.completedStat.textContent = `${completedGroups + completedKnockout}/33`;
+  els.completedStat.textContent = `${completedGroups + completedKnockout}/36`;
 }
 
 function displayName(slotId) {
