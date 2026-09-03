@@ -379,7 +379,11 @@ main { width: min(1520px, 100%); margin: 0 auto; }
 .mapping-row:last-child { border-bottom: 0; }
 .mapping-identity { min-width: 0; }
 .mapping-row label { display: block; margin-bottom: 4px; color: var(--muted); font: 700 8px var(--mono); text-transform: uppercase; }
-.mapping-row input { width: 100%; height: 38px; padding: 0 11px; color: var(--ink); background: var(--paper); border: 1px solid #c8d3df; border-radius: 3px; font-size: 12px; font-weight: 700; }
+.mapping-row input,
+.mapping-row select { width: 100%; height: 38px; padding: 0 11px; color: var(--ink); background: var(--paper); border: 1px solid #c8d3df; border-radius: 3px; font-size: 12px; font-weight: 700; }
+.mapping-row select { margin-top: 0; cursor: pointer; }
+.mapping-row select:disabled { color: #8995a3; background: #edf1f5; cursor: not-allowed; }
+.mapping-identity label:not(:first-child) { margin-top: 9px; }
 .mapping-slot { display: grid; place-items: center; width: 42px; height: 42px; color: #97a2b0; background: var(--soft); border: 1px dashed #bac6d3; border-radius: 50%; font: 800 13px var(--display); }
 .mapping-slot.assigned { color: var(--white); background: var(--group-color, var(--blue)); border-color: var(--group-color, var(--blue)); box-shadow: 0 0 0 4px color-mix(in srgb, var(--group-color, var(--blue)) 12%, transparent); }
 

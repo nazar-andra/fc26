@@ -1379,12 +1379,71 @@ function renderMapping() {
       });
       const identity = document.createElement("div");
       identity.className = "mapping-identity";
-      identity.append(label, input);
+      const slotLabel = document.createElement("label");
+      slotLabel.htmlFor = `slot-${team.id}`;
+      slotLabel.textContent = "Pilih slot grup";
+      const slotSelect = document.createElement("select");
+      slotSelect.id = `slot-${team.id}`;
+      slotSelect.disabled = viewOnly || locked;
+
+      const emptyOption = document.createElement("option");
+      emptyOption.value = "";
+      emptyOption.textContent = "Belum ditempatkan";
+      slotSelect.append(emptyOption);
+
+      TEAM_SLOTS
+        .filter((candidate) => candidate.allowedCategories.includes(team.category))
+        .forEach((candidate) => {
+          const option = document.createElement("option");
+          const occupantId = state.mapping[candidate.id];
+          const occupant = masterTeams.find((item) => item.id === occupantId);
+          option.value = candidate.id;
+          option.textContent = occupant && occupant.id !== team.id
+            ? `${candidate.id} · Grup ${candidate.group} — ${occupant.name}`
+            : `${candidate.id} · Grup ${candidate.group}`;
+          slotSelect.append(option);
+        });
+
+      slotSelect.value = assignedSlot || "";
+      slotSelect.addEventListener("change", (event) => {
+        const targetSlotId = event.target.value || null;
+        if (targetSlotId === assignedSlot) return;
+        if (!prepareForMappingChange(`Perubahan slot ${team.name || team.id}`)) {
+          renderMapping();
+          return;
+        }
+        assignTeamToSlot(team.id, targetSlotId);
+        persist();
+        renderAll();
+      });
+
+      identity.append(label, input, slotLabel, slotSelect);
       row.append(slot, identity);
       section.append(row);
     });
     els.mappingGrid.append(section);
   });
+}
+
+function assignTeamToSlot(teamId, targetSlotId) {
+  const team = masterTeams.find((item) => item.id === teamId);
+  if (!team) return false;
+  if (targetSlotId && !isTeamAllowedInSlot(team, targetSlotId)) return false;
+
+  const currentSlotId = Object.keys(state.mapping).find((slotId) => state.mapping[slotId] === teamId) || null;
+  if (currentSlotId === targetSlotId) return false;
+
+  const displacedTeamId = targetSlotId ? state.mapping[targetSlotId] : null;
+  if (currentSlotId) state.mapping[currentSlotId] = null;
+  if (targetSlotId) state.mapping[targetSlotId] = teamId;
+
+  if (displacedTeamId && currentSlotId) {
+    const displacedTeam = masterTeams.find((item) => item.id === displacedTeamId);
+    if (isTeamAllowedInSlot(displacedTeam, currentSlotId)) {
+      state.mapping[currentSlotId] = displacedTeamId;
+    }
+  }
+  return true;
 }
 
 function createRandomMapping() {
