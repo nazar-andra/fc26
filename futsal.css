@@ -363,9 +363,27 @@ main { width: min(1520px, 100%); margin: 0 auto; }
 .schedule-table td { padding: 12px 14px; border-top: 1px solid var(--line); font-size: 12px; }
 .schedule-table td:first-child { width: 74px; color: var(--blue); font: 700 11px var(--mono); }
 .schedule-table td:nth-child(2) { width: 92px; font: 700 11px var(--mono); }
+.schedule-table td:nth-child(3) { width: auto; }
+.schedule-table td:nth-child(4) { width: 142px; }
+.schedule-table td:nth-child(5) { width: 112px; text-align: right; }
+.schedule-table tr.schedule-complete { background: #f6faf7; }
+.schedule-table tr.schedule-complete td:first-child { box-shadow: inset 3px 0 var(--field); }
 .schedule-table tr.break-row td { color: var(--muted); background: #fafbfd; font-style: italic; }
+.schedule-table tr.break-row td:first-child { box-shadow: none; }
 .schedule-versus { color: var(--muted); padding: 0 7px; font-size: 10px; }
 .schedule-stage { display: inline-block; margin-left: 8px; padding: 3px 6px; color: var(--field); background: #eaf6f1; border-radius: 2px; font: 700 9px var(--mono); text-transform: uppercase; }
+.schedule-score-editor { display: flex; align-items: center; gap: 5px; }
+.schedule-score-input { width: 38px; height: 34px; font-size: 15px; }
+.schedule-score-divider { color: #8d99a8; font: 700 10px var(--mono); }
+.schedule-penalties { display: flex; align-items: center; gap: 4px; margin-left: 4px; padding-left: 8px; border-left: 1px solid var(--line); }
+.schedule-penalties span { color: var(--muted); font: 700 8px var(--mono); text-transform: uppercase; }
+.schedule-penalties i { color: var(--muted); font: 400 9px var(--mono); font-style: normal; }
+.schedule-penalties input { width: 30px; height: 30px; padding: 0; border: 1px solid #d5c8a7; background: #fffdf6; text-align: center; }
+.schedule-notes-button { min-height: 32px; padding: 6px 9px; color: var(--blue); background: var(--white); border: 1px solid #b9c7d7; border-radius: 3px; font: 700 9px var(--mono); text-transform: uppercase; transition: color .2s ease, background .2s ease, border-color .2s ease, transform .2s ease; }
+.schedule-notes-button:hover { border-color: var(--blue); background: #f2f7fc; }
+.schedule-notes-button:active { transform: translateY(1px); }
+.schedule-notes-button.has-notes { color: var(--white); background: var(--field); border-color: var(--field); }
+.schedule-notes-button:disabled { color: #97a2b0; background: var(--soft); border-color: var(--line); cursor: not-allowed; }
 
 .mapping-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin: -8px 0 15px; }
 .mapping-meta { color: var(--muted); font: 700 10px var(--mono); text-transform: uppercase; }
@@ -488,8 +506,37 @@ main { width: min(1520px, 100%); margin: 0 auto; }
   .match-team { font-size: 10px; }
   .schedule-day { overflow: hidden; }
   .schedule-day-head { align-items: start; flex-direction: column; gap: 4px; }
-  .schedule-table th:nth-child(1), .schedule-table td:nth-child(1) { display: none; }
-  .schedule-table td { padding-inline: 10px; }
+  .schedule-day-head h3 { font-size: 19px; }
+  .schedule-table, .schedule-table tbody { display: block; width: 100%; }
+  .schedule-table thead { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .schedule-table tbody { display: grid; gap: 10px; padding: 10px; background: var(--soft); }
+  .schedule-table tbody tr:not(.break-row) {
+    display: grid;
+    grid-template-areas:
+      "match time"
+      "fixture fixture"
+      "score notes";
+    grid-template-columns: minmax(0,1fr) auto;
+    gap: 11px 14px;
+    padding: 13px 14px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-left: 4px solid #b9c7d7;
+    border-radius: 7px;
+    box-shadow: 0 5px 15px rgba(9,47,99,.055);
+  }
+  .schedule-table tbody tr.schedule-complete { border-left-color: var(--field); background: #f8fcfa; }
+  .schedule-table tbody td { width: auto; padding: 0; border: 0; }
+  .schedule-table tbody td:nth-child(1) { grid-area: match; width: auto; box-shadow: none; }
+  .schedule-table tbody td:nth-child(2) { grid-area: time; width: auto; color: var(--muted); text-align: right; }
+  .schedule-table tbody td:nth-child(3) { grid-area: fixture; width: auto; padding-block: 10px; border-block: 1px solid var(--line); font-weight: 700; line-height: 1.55; }
+  .schedule-table tbody td:nth-child(4) { grid-area: score; width: auto; align-self: center; }
+  .schedule-table tbody td:nth-child(5) { grid-area: notes; width: auto; align-self: center; text-align: right; }
+  .schedule-table tr.break-row { display: block; }
+  .schedule-table tr.break-row td { display: block; width: 100%; padding: 9px 12px; border: 0; text-align: center; }
+  .schedule-stage { display: block; width: fit-content; margin: 7px 0 0; }
+  .schedule-score-input { width: 42px; height: 38px; }
+  .schedule-penalties { margin-left: 2px; padding-left: 6px; }
   .rules-list li { grid-template-columns: 1fr; gap: 7px; }
   .cards-grid, .podium { grid-template-columns: 1fr; }
   .recap-team-list { grid-template-columns: repeat(2,minmax(0,1fr)); }

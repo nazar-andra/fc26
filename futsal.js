@@ -1060,6 +1060,9 @@ function renderSchedule(knockout) {
       home: displayName(match.home),
       away: displayName(match.away),
       stage: `Grup ${match.group}`,
+      type: "group",
+      match,
+      result: state.groupResults[match.id] || emptyGroupResult(),
       sessionBreak: index > 0 && day.times[index - 1] < "12:00" && day.times[index] >= "12:00",
     })));
   });
@@ -1131,6 +1134,9 @@ function scheduleKnockout(id, time, byId) {
     home: match?.home ? displayName(match.home) : sourcePlaceholder(match?.sourceHome || ["winner", "TBD"]),
     away: match?.away ? displayName(match.away) : sourcePlaceholder(match?.sourceAway || ["winner", "TBD"]),
     stage: match?.stage || id,
+    type: "knockout",
+    match,
+    result: match?.result || emptyKnockoutResult(),
   };
 }
 
@@ -1147,14 +1153,14 @@ function renderScheduleDay(date, label, entries) {
 
   const table = document.createElement("table");
   table.className = "schedule-table";
-  table.innerHTML = "<thead><tr><th>Match</th><th>Waktu</th><th>Pertandingan</th></tr></thead>";
+  table.innerHTML = "<thead><tr><th>Match</th><th>Waktu</th><th>Pertandingan</th><th>Skor</th><th>Catatan</th></tr></thead>";
   const body = document.createElement("tbody");
   entries.forEach((entry) => {
     if (entry.breakLabel) {
       const row = document.createElement("tr");
       row.className = "break-row";
       const cell = document.createElement("td");
-      cell.colSpan = 3;
+      cell.colSpan = 5;
       cell.textContent = entry.breakLabel;
       row.append(cell);
       body.append(row);
@@ -1164,7 +1170,7 @@ function renderScheduleDay(date, label, entries) {
       const breakRow = document.createElement("tr");
       breakRow.className = "break-row";
       const breakCell = document.createElement("td");
-      breakCell.colSpan = 3;
+      breakCell.colSpan = 5;
       breakCell.textContent = "Jeda sesi pagi — sore";
       breakRow.append(breakCell);
       body.append(breakRow);
@@ -1178,12 +1184,79 @@ function renderScheduleDay(date, label, entries) {
     fixture.append(versus, document.createTextNode(entry.away));
     const stage = document.createElement("span"); stage.className = "schedule-stage"; stage.textContent = entry.stage;
     fixture.append(stage);
-    row.append(id, time, fixture);
+
+    const score = document.createElement("td");
+    score.append(createScheduleScoreEditor(entry));
+
+    const notes = document.createElement("td");
+    notes.append(createScheduleNotesButton(entry));
+
+    const complete = entry.result.home !== "" && entry.result.away !== "";
+    row.className = `${complete ? "schedule-complete" : "schedule-pending"}${hasMatchRecords(entry.result) ? " has-notes" : ""}`;
+    row.append(id, time, fixture, score, notes);
     body.append(row);
   });
   table.append(body);
   section.append(head, table);
   els.scheduleDays.append(section);
+}
+
+function createScheduleScoreEditor(entry) {
+  const editor = document.createElement("div");
+  editor.className = "schedule-score-editor";
+  const canEdit = entry.type === "group" || Boolean(entry.match?.home && entry.match?.away);
+  const setScore = entry.type === "group" ? setGroupScore : setKnockoutScore;
+
+  ["home", "away"].forEach((side, index) => {
+    if (index) {
+      const divider = document.createElement("span");
+      divider.className = "schedule-score-divider";
+      divider.textContent = "—";
+      editor.append(divider);
+    }
+    const input = createScoreInput(
+      entry.result[side],
+      `${entry.id} skor ${side === "home" ? entry.home : entry.away}`,
+      (value) => setScore(entry.id, side, value),
+    );
+    input.classList.add("schedule-score-input");
+    input.disabled = viewOnly || !canEdit;
+    editor.append(input);
+  });
+
+  if (
+    entry.type === "knockout" &&
+    entry.result.home !== "" &&
+    entry.result.away !== "" &&
+    Number(entry.result.home) === Number(entry.result.away)
+  ) {
+    const penalties = document.createElement("div");
+    penalties.className = "schedule-penalties";
+    const label = document.createElement("span");
+    label.textContent = "Pen.";
+    penalties.append(label, createPenaltyInput(entry.match, "penHome"));
+    const divider = document.createElement("i");
+    divider.textContent = "—";
+    penalties.append(divider, createPenaltyInput(entry.match, "penAway"));
+    editor.append(penalties);
+  }
+  return editor;
+}
+
+function createScheduleNotesButton(entry) {
+  const button = document.createElement("button");
+  button.type = "button";
+  const hasRecords = hasMatchRecords(entry.result);
+  button.className = `schedule-notes-button${hasRecords ? " has-notes" : ""}`;
+  button.textContent = viewOnly ? "Lihat" : hasRecords ? "Lihat / edit" : "Tambah";
+  const canOpen = entry.type === "group" || Boolean(entry.match?.home && entry.match?.away);
+  button.disabled = !canOpen;
+  button.setAttribute("aria-label", `${button.textContent} catatan ${entry.id}`);
+  button.addEventListener("click", () => {
+    if (entry.type === "group") openMatchDialog(entry.id);
+    else openKnockoutMatchDialog(entry.match);
+  });
+  return button;
 }
 
 function renderTeamRecap(knockout) {
