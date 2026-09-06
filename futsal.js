@@ -119,7 +119,7 @@ const GROUP_DAY_SESSIONS = [
 ];
 
 const DAY_DEFS = [
-  { date: "Senin, 07 September 2026", label: "Penyisihan hari I", times: ["07:30", "08:00", "08:30", "09:00", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30"] },
+  { date: "Senin, 07 September 2026", label: "Penyisihan hari I", times: ["07:30", "08:00", "08:30", "09:00", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00"] },
   { date: "Selasa, 08 September 2026", label: "Penyisihan hari II", times: ["07:30", "08:00", "08:30", "09:00", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30"] },
   { date: "Rabu, 09 September 2026", label: "Penyisihan hari III", times: ["07:30", "08:00", "08:30", "09:00", "16:00", "16:30", "17:00", "17:30"] },
 ];
@@ -1054,7 +1054,9 @@ function renderSchedule(knockout) {
   els.scheduleDays.replaceChildren();
   DAY_DEFS.forEach((day, dayIndex) => {
     const ordered = buildGroupDaySchedule(dayIndex);
-    renderScheduleDay(day.date, day.label, ordered.map((match, index) => ({
+    renderScheduleDay(day.date, day.label, ordered.map((match, index) => {
+      if (match.breakLabel) return match;
+      return {
       id: match.id,
       time: day.times[index],
       home: displayName(match.home),
@@ -1064,7 +1066,8 @@ function renderSchedule(knockout) {
       match,
       result: state.groupResults[match.id] || emptyGroupResult(),
       sessionBreak: index > 0 && day.times[index - 1] < "12:00" && day.times[index] >= "12:00",
-    })));
+      };
+    }));
   });
 
   const knockoutById = Object.fromEntries(knockout.map((match) => [match.id, match]));
@@ -1088,7 +1091,24 @@ function buildGroupDaySchedule(dayIndex) {
   if (!sessions) return [];
   const morning = orderDayMatches(selectGroupMatches(sessions.morning));
   const afternoon = centerGroupMatches(selectGroupMatches(sessions.afternoon), "D");
-  return [...morning, ...afternoon];
+  const ordered = [...morning, ...afternoon];
+  if (dayIndex === 0) {
+    const a2VsA3 = ordered.find(
+      (match) => match.group === "A" &&
+        ((match.home === "A2" && match.away === "A3") ||
+          (match.home === "A3" && match.away === "A2")),
+    );
+    if (a2VsA3) {
+      const remaining = ordered.filter((match) => match !== a2VsA3);
+      return [
+        ...remaining.slice(0, 3),
+        { breakLabel: "Slot 09.00 dikosongkan — A2 vs A3 dipindah ke 19.00 WIB" },
+        ...remaining.slice(3),
+        a2VsA3,
+      ];
+    }
+  }
+  return ordered;
 }
 
 function selectGroupMatches(bundles) {
