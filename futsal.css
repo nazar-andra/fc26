@@ -375,6 +375,13 @@ main { width: min(1520px, 100%); margin: 0 auto; }
 .schedule-score-editor { display: flex; align-items: center; gap: 5px; }
 .schedule-score-input { width: 38px; height: 34px; font-size: 15px; }
 .schedule-score-divider { color: #8d99a8; font: 700 10px var(--mono); }
+.schedule-editor { display: flex; align-items: center; gap: 5px; min-width: 220px; }
+.schedule-editor select,
+.schedule-editor input { min-height: 32px; padding: 5px 7px; color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: 3px; font-size: 11px; }
+.schedule-editor select { max-width: 118px; }
+.schedule-editor input { width: 82px; }
+.schedule-editor button { min-height: 32px; padding: 5px 8px; color: var(--white); background: var(--blue); border: 0; border-radius: 3px; font-size: 10px; font-weight: 700; }
+.schedule-editor button:hover { background: var(--navy); }
 .schedule-penalties { display: flex; align-items: center; gap: 4px; margin-left: 4px; padding-left: 8px; border-left: 1px solid var(--line); }
 .schedule-penalties span { color: var(--muted); font: 700 8px var(--mono); text-transform: uppercase; }
 .schedule-penalties i { color: var(--muted); font: 400 9px var(--mono); font-style: normal; }

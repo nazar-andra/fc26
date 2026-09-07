@@ -128,6 +128,7 @@ const DEFAULT_STATE = {
   title: "Turnamen Futsal AirNav 2026",
   mapping: Object.fromEntries(TEAM_SLOTS.map((slot) => [slot.id, null])),
   mappingLocked: false,
+  scheduleOverrides: {},
   groupResults: {},
   knockoutResults: {},
 };
@@ -311,9 +312,32 @@ function normalizeState(input) {
     title: typeof safe.title === "string" && safe.title.trim() ? safe.title : DEFAULT_STATE.title,
     mapping,
     mappingLocked: Boolean(safe.mappingLocked),
+    scheduleOverrides: normalizeScheduleOverrides(safe.scheduleOverrides),
     groupResults: normalizeResults(safe.groupResults, GROUP_MATCHES.map((match) => match.id), true),
     knockoutResults: normalizeResults(safe.knockoutResults, KNOCKOUT_DEFS.map((match) => match.id), false),
   };
+}
+
+function normalizeScheduleOverrides(source) {
+  const overrides = {};
+  const allowedIds = new Set(GROUP_MATCHES.map((match) => match.id));
+  Object.entries(source && typeof source === "object" ? source : {}).forEach(([matchId, value]) => {
+    const dayIndex = Number(value?.dayIndex);
+    const time = typeof value?.time === "string" ? value.time : "";
+    if (!allowedIds.has(matchId) || !Number.isInteger(dayIndex) || dayIndex < 0 || dayIndex > 2 || !/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) return;
+    overrides[matchId] = { dayIndex, time };
+  });
+  return overrides;
+}
+
+function scheduleMoveFor(matchId) {
+  return state.scheduleOverrides[matchId];
+}
+
+function saveScheduleChange(matchId, dayIndex, time) {
+  state.scheduleOverrides[matchId] = { dayIndex, time };
+  persist();
+  renderAll();
 }
 
 function isTeamAllowedInSlot(team, slotId) {
@@ -1054,20 +1078,28 @@ function renderSchedule(knockout) {
   els.scheduleDays.replaceChildren();
   DAY_DEFS.forEach((day, dayIndex) => {
     const ordered = buildGroupDaySchedule(dayIndex);
-    renderScheduleDay(day.date, day.label, ordered.map((match, index) => {
+    const entries = ordered.map((match, index) => {
       if (match.breakLabel) return match;
       return {
       id: match.id,
-      time: day.times[index],
+      time: scheduleMoveFor(match.id)?.time || day.times[index],
       home: displayName(match.home),
       away: displayName(match.away),
       stage: `Grup ${match.group}`,
       type: "group",
       match,
       result: state.groupResults[match.id] || emptyGroupResult(),
-      sessionBreak: index > 0 && day.times[index - 1] < "12:00" && day.times[index] >= "12:00",
+      sessionBreak: false,
       };
-    }));
+    });
+    entries.sort((left, right) => scheduleEntryTime(left).localeCompare(scheduleEntryTime(right)));
+    let previousTime = "";
+    entries.forEach((entry) => {
+      if (entry.breakLabel) return;
+      entry.sessionBreak = previousTime < "12:00" && entry.time >= "12:00";
+      previousTime = entry.time;
+    });
+    renderScheduleDay(day.date, day.label, entries, dayIndex);
   });
 
   const knockoutById = Object.fromEntries(knockout.map((match) => [match.id, match]));
@@ -1079,11 +1111,16 @@ function renderSchedule(knockout) {
     { breakLabel: "Istirahat dan persiapan semifinal" },
     scheduleKnockout("SF1", "16:00", knockoutById),
     scheduleKnockout("SF2", "17:00", knockoutById),
-  ]);
+  ], 3);
   renderScheduleDay("Jumat, 11 September 2026", "Perebutan juara 3 & final", [
     scheduleKnockout("THIRD", "16:00", knockoutById),
     scheduleKnockout("FINAL", "17:00", knockoutById),
-  ]);
+  ], 4);
+}
+
+function scheduleEntryTime(entry) {
+  if (entry.breakLabel) return entry.breakLabel.includes("09.00") ? "09:00" : "12:00";
+  return entry.time || "23:59";
 }
 
 function buildGroupDaySchedule(dayIndex) {
@@ -1091,7 +1128,12 @@ function buildGroupDaySchedule(dayIndex) {
   if (!sessions) return [];
   const morning = orderDayMatches(selectGroupMatches(sessions.morning));
   const afternoon = centerGroupMatches(selectGroupMatches(sessions.afternoon), "D");
-  const ordered = [...morning, ...afternoon];
+  const movedMatches = GROUP_MATCHES.filter((match) => scheduleMoveFor(match.id));
+  const ordered = [...morning, ...afternoon]
+    .filter((match) => !scheduleMoveFor(match.id) || scheduleMoveFor(match.id).dayIndex === dayIndex);
+  movedMatches
+    .filter((match) => scheduleMoveFor(match.id).dayIndex === dayIndex && !ordered.includes(match))
+    .forEach((match) => ordered.push(match));
   if (dayIndex === 0) {
     const a2VsA3 = ordered.find(
       (match) => match.group === "A" &&
@@ -1160,7 +1202,7 @@ function scheduleKnockout(id, time, byId) {
   };
 }
 
-function renderScheduleDay(date, label, entries) {
+function renderScheduleDay(date, label, entries, dayIndex) {
   const section = document.createElement("article");
   section.className = "schedule-day";
   const head = document.createElement("div");
@@ -1173,14 +1215,14 @@ function renderScheduleDay(date, label, entries) {
 
   const table = document.createElement("table");
   table.className = "schedule-table";
-  table.innerHTML = "<thead><tr><th>Match</th><th>Waktu</th><th>Pertandingan</th><th>Skor</th><th>Catatan</th></tr></thead>";
+  table.innerHTML = `<thead><tr><th>Match</th><th>Waktu</th><th>Pertandingan</th><th>Skor</th><th>Catatan</th>${viewOnly ? "" : "<th>Atur jadwal</th>"}</tr></thead>`;
   const body = document.createElement("tbody");
   entries.forEach((entry) => {
     if (entry.breakLabel) {
       const row = document.createElement("tr");
       row.className = "break-row";
       const cell = document.createElement("td");
-      cell.colSpan = 5;
+      cell.colSpan = viewOnly ? 5 : 6;
       cell.textContent = entry.breakLabel;
       row.append(cell);
       body.append(row);
@@ -1211,14 +1253,42 @@ function renderScheduleDay(date, label, entries) {
     const notes = document.createElement("td");
     notes.append(createScheduleNotesButton(entry));
 
+    if (!viewOnly) {
+      const editorCell = document.createElement("td");
+      editorCell.append(createScheduleEditor(entry, dayIndex));
+      row.append(id, time, fixture, score, notes, editorCell);
+    } else {
+      row.append(id, time, fixture, score, notes);
+    }
+
     const complete = entry.result.home !== "" && entry.result.away !== "";
     row.className = `${complete ? "schedule-complete" : "schedule-pending"}${hasMatchRecords(entry.result) ? " has-notes" : ""}`;
-    row.append(id, time, fixture, score, notes);
     body.append(row);
   });
   table.append(body);
   section.append(head, table);
   els.scheduleDays.append(section);
+}
+
+function createScheduleEditor(entry, currentDayIndex) {
+  if (entry.type !== "group") return document.createTextNode("—");
+  const editor = document.createElement("div");
+  editor.className = "schedule-editor";
+  const day = document.createElement("select");
+  DAY_DEFS.forEach((item, index) => {
+    const option = new Option(item.label, String(index));
+    option.selected = index === currentDayIndex;
+    day.append(option);
+  });
+  const time = document.createElement("input");
+  time.type = "time";
+  time.value = entry.time || "07:30";
+  const save = document.createElement("button");
+  save.type = "button";
+  save.textContent = "Simpan";
+  save.addEventListener("click", () => saveScheduleChange(entry.id, Number(day.value), time.value));
+  editor.append(day, time, save);
+  return editor;
 }
 
 function createScheduleScoreEditor(entry) {
