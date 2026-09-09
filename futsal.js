@@ -758,10 +758,6 @@ function renderStandings(standings) {
         if (cellIndex === 1) {
           td.className = "team-cell";
           td.textContent = displayName(row.id);
-          const slot = document.createElement("span");
-          slot.className = "team-slot";
-          slot.textContent = SLOT_BY_ID[row.id].category;
-          td.append(slot);
         } else {
           td.textContent = String(value);
         }
